@@ -1,0 +1,45 @@
+{
+  "jurisdiction": "India",
+  "version": "1.0",
+  "domain_mapping": {
+    "criminal": {
+      "subdomains": [
+        "violent_crimes",
+        "sexual_offences",
+        "property_crimes",
+        "fraud_and_deception",
+        "cyber_crimes",
+        "procedural_matters"
+      ],
+      "confidence_threshold": 0.8
+    },
+    "civil": {
+      "subdomains": [
+        "contract_disputes",
+        "arbitration_matters",
+        "property_disputes",
+        "family_matters",
+        "tort_law"
+      ],
+      "confidence_threshold": 0.7
+    }
+  },
+  "keyword_mapping": {
+    "violent_crimes": ["murder", "attempt to murder", "culpable homicide", "assault", "hurt", "grievous hurt"],
+    "sexual_offences": ["rape", "sexual assault", "outraging modesty", "indecent representation"],
+    "property_crimes": ["theft", "robbery", "dacoity", "criminal breach of trust", "cheat", "mischief"],
+    "fraud_and_deception": ["cheat", "criminal breach of trust", "forgery", "counterfeiting"],
+    "cyber_crimes": ["unauthorized access", "computer misuse", "cyber theft", "data theft"],
+    "procedural_matters": ["fir", "investigation", "charge sheet", "trial", "bail", "arrest"],
+    "contract_disputes": ["breach of contract", "void agreement", "consideration", "damages"],
+    "arbitration_matters": ["arbitration agreement", "arbitral award", "setting aside award", "enforcement"],
+    "property_disputes": ["adverse possession", "easement", "partition", "specific performance"],
+    "family_matters": ["divorce", "custody", "maintenance", "adoption"],
+    "tort_law": ["negligence", "defamation", "nuisance", "trespass"]
+  },
+  "fallback_rules": {
+    "default_domain": "civil",
+    "uncertainty_threshold": 0.5,
+    "escalation_path": ["civil", "criminal"]
+  }
+}

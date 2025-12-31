@@ -1,0 +1,32 @@
+{
+  "test-trace-123": [
+    {
+      "reward_score": 0.8,
+      "details": {
+        "accuracy": 0.75,
+        "helpfulness": 0.75,
+        "clarity": 0.75,
+        "completeness": 0.75,
+        "comment_adjustment": 0.05,
+        "timestamp": "2025-12-06T11:50:57.140380",
+        "trace_id": "test-trace-123",
+        "raw_score": 4
+      },
+      "timestamp": "2025-12-06T11:50:57.140380"
+    },
+    {
+      "reward_score": 0.8,
+      "details": {
+        "accuracy": 0.75,
+        "helpfulness": 0.75,
+        "clarity": 0.75,
+        "completeness": 0.75,
+        "comment_adjustment": 0.05,
+        "timestamp": "2025-12-06T11:50:57.141382",
+        "trace_id": "test-trace-123",
+        "raw_score": 4
+      },
+      "timestamp": "2025-12-06T11:50:57.141382"
+    }
+  ]
+}
