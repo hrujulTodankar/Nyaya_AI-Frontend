@@ -6,6 +6,7 @@ import CaseSummaryCard from './components/CaseSummaryCard.jsx'
 import LegalRouteCard from './components/LegalRouteCard.jsx'
 import TimelineCard from './components/TimelineCard.jsx'
 import GlossaryCard from './components/GlossaryCard.jsx'
+import JurisdictionInfoBar from './components/JurisdictionInfoBar.jsx'
 
 // Sample data for testing case presentation components
 const sampleCaseSummary = {
@@ -195,6 +196,13 @@ const sampleGlossary = {
   caseType: "Commercial Contract Dispute"
 };
 
+const sampleJurisdictionInfo = {
+  country: "India",
+  courtSystem: "Indian Judicial System",
+  authorityFraming: "Formal and procedural, emphasizing due process and evidence-based decisions",
+  emergencyGuidance: "File FIR at nearest Police Station, contact local magistrate for immediate orders"
+};
+
 function App() {
   const [activeCard, setActiveCard] = useState('query')
 
@@ -209,6 +217,7 @@ function App() {
       case 'test':
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+            <JurisdictionInfoBar jurisdiction={sampleJurisdictionInfo} />
             <CaseSummaryCard {...sampleCaseSummary} />
             <LegalRouteCard {...sampleLegalRoutes} />
             <TimelineCard {...sampleTimeline} />

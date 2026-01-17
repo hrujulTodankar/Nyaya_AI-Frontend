@@ -301,6 +301,57 @@ interface GlossaryCardProps {
 }
 ```
 
+## JurisdictionInfoBar
+
+Displays key information about a legal jurisdiction including country, court system, authority framing, and emergency guidance.
+
+### Prop Interface
+
+```typescript
+interface JurisdictionInfoBarProps {
+  jurisdiction: JurisdictionInfo;
+}
+
+interface JurisdictionInfo {
+  country: string;
+  courtSystem: string;
+  authorityFraming: string;
+  emergencyGuidance: string;
+}
+```
+
+### Example Data
+
+#### India
+```json
+{
+  "country": "India",
+  "courtSystem": "Indian Judicial System",
+  "authorityFraming": "Formal and procedural, emphasizing due process and evidence-based decisions",
+  "emergencyGuidance": "File FIR at nearest Police Station, contact local magistrate for immediate orders"
+}
+```
+
+#### United Kingdom
+```json
+{
+  "country": "United Kingdom",
+  "courtSystem": "UK Courts and Tribunals",
+  "authorityFraming": "Adversarial system with emphasis on precedent and judicial discretion",
+  "emergencyGuidance": "Contact Police (999) or Crown Prosecution Service for urgent matters"
+}
+```
+
+#### United Arab Emirates
+```json
+{
+  "country": "United Arab Emirates",
+  "courtSystem": "UAE Federal Judiciary",
+  "authorityFraming": "Civil law system with Islamic Sharia influences, emphasizing reconciliation",
+  "emergencyGuidance": "Contact Public Prosecution or local police for immediate legal intervention"
+}
+```
+
 ## Implementation Notes
 
 1. **Confidence Levels**: All components include confidence scores (0.0-1.0) to indicate AI certainty in the analysis.
