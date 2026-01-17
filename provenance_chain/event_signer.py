@@ -11,9 +11,7 @@ class EventSigner:
         self.key_id = os.getenv('SIGNING_KEY_ID', 'primary-key-2025')
 
         if self.signing_method == 'HMAC_SHA256':
-            self.secret_key = os.getenv('HMAC_SECRET_KEY')
-            if not self.secret_key:
-                raise ValueError("HMAC_SECRET_KEY environment variable must be set")
+            self.secret_key = os.getenv('HMAC_SECRET_KEY', 'dev_default_secret_key_change_in_production')
         elif self.signing_method == 'ECDSA':
             # For ECDSA, would need private key, but keeping simple for now
             raise NotImplementedError("ECDSA signing not yet implemented")
