@@ -87,6 +87,17 @@ class TraceResponse(BaseModel):
     nonce_verification: bool
     signature_verification: bool
 
+class RLSignalRequest(BaseModel):
+    trace_id: str = Field(..., description="UUID trace identifier")
+    helpful: bool = Field(..., description="Whether the response was helpful")
+    clear: bool = Field(..., description="Whether the response was clear")
+    match: bool = Field(..., description="Whether the response matched the query")
+
+class RLSignalResponse(BaseModel):
+    status: str
+    trace_id: str
+    message: str
+
 class ErrorResponse(BaseModel):
     error_code: str
     message: str

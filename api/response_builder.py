@@ -1,7 +1,7 @@
 from typing import Dict, Any, List
 from api.schemas import (
     NyayaResponse, MultiJurisdictionResponse, ExplainReasoningResponse,
-    FeedbackResponse, TraceResponse, ErrorResponse
+    FeedbackResponse, TraceResponse, RLSignalResponse, ErrorResponse
 )
 from provenance_chain.lineage_tracer import tracer
 from provenance_chain.hash_chain_ledger import ledger
@@ -76,6 +76,19 @@ class ResponseBuilder:
     ) -> FeedbackResponse:
         """Build a feedback response."""
         return FeedbackResponse(
+            status=status,
+            trace_id=trace_id,
+            message=message
+        )
+
+    @staticmethod
+    def build_rl_signal_response(
+        status: str,
+        trace_id: str,
+        message: str
+    ) -> RLSignalResponse:
+        """Build an RL signal response."""
+        return RLSignalResponse(
             status=status,
             trace_id=trace_id,
             message=message

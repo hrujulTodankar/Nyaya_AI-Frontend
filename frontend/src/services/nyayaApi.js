@@ -136,7 +136,7 @@ export const legalQueryService = {
   async getTrace(traceId) {
     try {
       const response = await apiClient.get(`/nyaya/trace/${traceId}`)
-      
+
       return {
         success: true,
         data: response.data
@@ -145,6 +145,28 @@ export const legalQueryService = {
       return {
         success: false,
         error: error.response?.data?.message || error.message || 'Trace retrieval failed'
+      }
+    }
+  },
+
+  // Send RL training signal
+  async sendRLSignal({ trace_id, helpful, clear, match }) {
+    try {
+      const response = await apiClient.post('/nyaya/rl_signal', {
+        trace_id,
+        helpful,
+        clear,
+        match
+      })
+
+      return {
+        success: true,
+        data: response.data
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message || 'RL signal send failed'
       }
     }
   }
@@ -172,3 +194,6 @@ export default {
   legalQuery: legalQueryService,
   health: healthService
 }
+
+// Export the sendRLSignal function directly for convenience
+export const sendRLSignal = legalQueryService.sendRLSignal

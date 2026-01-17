@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import asyncio
 from api.schemas import (
     QueryRequest, MultiJurisdictionRequest, ExplainReasoningRequest,
-    FeedbackRequest, NyayaResponse, MultiJurisdictionResponse,
-    ExplainReasoningResponse, FeedbackResponse, TraceResponse
+    FeedbackRequest, RLSignalRequest, NyayaResponse, MultiJurisdictionResponse,
+    ExplainReasoningResponse, FeedbackResponse, RLSignalResponse, TraceResponse
 )
 from api.dependencies import get_trace_id, validate_nonce, emit_query_received_event
 from api.response_builder import ResponseBuilder
@@ -256,6 +256,44 @@ async def submit_feedback(
             ).dict()
         )
 
+@router.post("/rl_signal", response_model=RLSignalResponse)
+async def send_rl_signal(
+    request: RLSignalRequest,
+    trace_id: str = Depends(get_trace_id),
+    nonce: str = Depends(validate_nonce),
+    background_tasks: Optional[BackgroundTasks] = None
+):
+    """Send RL training signal."""
+    try:
+        # Forward to RL engine - just record the signals
+        # No RL logic here, just formatting and API call as per task
+
+        # Emit RL signal received event
+        if background_tasks:
+            background_tasks.add_task(
+                _emit_rl_signal_received_event,
+                request.trace_id,
+                request.helpful,
+                request.clear,
+                request.match
+            )
+
+        return ResponseBuilder.build_rl_signal_response(
+            status="recorded",
+            trace_id=request.trace_id,
+            message="RL signal recorded successfully"
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=ResponseBuilder.build_error_response(
+                "RL_SIGNAL_ERROR",
+                "Failed to process RL signal",
+                trace_id
+            ).dict()
+        )
+
 @router.get("/trace/{trace_id}", response_model=TraceResponse)
 async def get_trace(trace_id: str):
     """Get full sovereign audit trail."""
@@ -298,6 +336,22 @@ async def _emit_feedback_received_event(trace_id: str, rating: int, feedback_typ
         "details": {
             "rating": rating,
             "feedback_type": feedback_type
+        }
+    }
+    # In real implementation, this would be added to the ledger
+
+async def _emit_rl_signal_received_event(trace_id: str, helpful: bool, clear: bool, match: bool):
+    """Emit RL signal received event."""
+    event = {
+        "timestamp": "current_timestamp",
+        "agent_id": "api_gateway",
+        "jurisdiction": "global",
+        "event_name": "rl_signal_received",
+        "request_hash": hash(f"{trace_id}:{helpful}:{clear}:{match}") % (10 ** 8),
+        "details": {
+            "helpful": helpful,
+            "clear": clear,
+            "match": match
         }
     }
     # In real implementation, this would be added to the ledger
