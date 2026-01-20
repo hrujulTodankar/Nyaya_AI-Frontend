@@ -1,4 +1,4 @@
-import { DisclaimerBox } from '../components/DisclaimerBox';
+import DisclaimerBox from '../components/DisclaimerBox';
 
 export default {
   title: 'Nyaya UI Kit/Trust/DisclaimerBox',

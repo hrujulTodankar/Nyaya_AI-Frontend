@@ -1,4 +1,4 @@
-import { JurisdictionInfoBar } from '../components/JurisdictionInfoBar';
+import JurisdictionInfoBar from '../components/JurisdictionInfoBar';
 
 export default {
   title: 'Nyaya UI Kit/Jurisdiction/JurisdictionInfoBar',

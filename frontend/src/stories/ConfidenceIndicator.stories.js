@@ -1,4 +1,4 @@
-import { ConfidenceIndicator } from '../components/ConfidenceIndicator';
+import ConfidenceIndicator from '../components/ConfidenceIndicator';
 
 export default {
   title: 'Nyaya UI Kit/Trust/ConfidenceIndicator',

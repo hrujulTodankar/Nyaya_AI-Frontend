@@ -1,4 +1,4 @@
-import { SessionStatus } from '../components/SessionStatus';
+import SessionStatus from '../components/SessionStatus';
 
 export default {
   title: 'Nyaya UI Kit/Trust/SessionStatus',

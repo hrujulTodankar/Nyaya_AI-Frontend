@@ -1,4 +1,4 @@
-import { ProceduralTimeline } from '../components/ProceduralTimeline';
+import ProceduralTimeline from '../components/ProceduralTimeline';
 
 export default {
   title: 'Nyaya UI Kit/Procedural/ProceduralTimeline',

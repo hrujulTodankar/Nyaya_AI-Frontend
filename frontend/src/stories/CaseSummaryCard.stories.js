@@ -1,4 +1,4 @@
-import { CaseSummaryCard } from '../components/CaseSummaryCard';
+import CaseSummaryCard from '../components/CaseSummaryCard';
 
 export default {
   title: 'Nyaya UI Kit/Case Presentation/CaseSummaryCard',
