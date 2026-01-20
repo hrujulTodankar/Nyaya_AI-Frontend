@@ -37,6 +37,11 @@ import { CaseSummaryCard, DisclaimerBox, SessionStatus } from 'nyaya-ui-kit';
 - CSS (inline styles for simplicity)
 - Material UI (for Stepper component)
 
+## Development
+- Storybook for component development and documentation
+- Run `npm run storybook` in the `frontend/` directory to view interactive component stories
+- Built static site available in `frontend/storybook-static/` for deployment
+
 ## What Was NOT Touched
 - Backend APIs
 - Legal logic or wording
