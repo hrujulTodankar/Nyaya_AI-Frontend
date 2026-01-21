@@ -69,6 +69,20 @@ const ProceduralTimeline = ({ jurisdiction }) => {
 
   const steps = timelineData[jurisdiction] || []
 
+  // Handle missing or empty steps
+  if (!jurisdiction || steps.length === 0) {
+    return (
+      <div className="procedural-timeline">
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <h3 style={{ color: '#dc3545', marginBottom: '10px' }}>Information will appear here once available</h3>
+          <p style={{ color: '#6c757d' }}>
+            Procedural timeline data is currently unavailable for the selected jurisdiction.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="procedural-timeline">
       <h4 style={{

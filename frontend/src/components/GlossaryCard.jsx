@@ -10,9 +10,9 @@ const GlossaryCard = ({
     return (
       <div className="consultation-card">
         <div style={{ textAlign: 'center', padding: '20px' }}>
-          <h3 style={{ color: '#dc3545', marginBottom: '10px' }}>Data Error</h3>
+          <h3 style={{ color: '#dc3545', marginBottom: '10px' }}>Information will appear here once available</h3>
           <p style={{ color: '#6c757d' }}>
-            Unable to display glossary due to missing required information.
+            Glossary data is currently unavailable or incomplete.
           </p>
         </div>
       </div>
@@ -69,9 +69,9 @@ const GlossaryCard = ({
       {/* Terms List */}
       <div>
         <div className="section-label">Terms & Definitions</div>
-        {terms.map((termData, index) => {
-          const isExpanded = expandedTerms.has(termData.term);
-          const hasConfidence = termData.confidence !== undefined;
+        {terms?.map((termData, index) => {
+          const isExpanded = expandedTerms.has(termData?.term);
+          const hasConfidence = termData?.confidence !== undefined;
 
           return (
             <div key={index} style={{
@@ -90,7 +90,7 @@ const GlossaryCard = ({
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}
-                onClick={() => toggleTerm(termData.term)}
+                onClick={() => toggleTerm(termData?.term)}
               >
                 <h3 style={{
                   fontSize: '1.1rem',
@@ -98,7 +98,7 @@ const GlossaryCard = ({
                   margin: 0,
                   fontWeight: '600'
                 }}>
-                  {termData.term}
+                  {termData?.term}
                 </h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   {hasConfidence && (

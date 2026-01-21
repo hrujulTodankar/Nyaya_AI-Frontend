@@ -6,9 +6,9 @@ const LegalRouteCard = ({ routes, jurisdiction, caseType }) => {
     return (
       <div className="consultation-card">
         <div style={{ textAlign: 'center', padding: '20px' }}>
-          <h3 style={{ color: '#dc3545', marginBottom: '10px' }}>Data Error</h3>
+          <h3 style={{ color: '#dc3545', marginBottom: '10px' }}>Information will appear here once available</h3>
           <p style={{ color: '#6c757d' }}>
-            Unable to display legal routes due to missing required information.
+            Legal route data is currently unavailable or incomplete.
           </p>
         </div>
       </div>
