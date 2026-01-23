@@ -22,18 +22,32 @@ const SkeletonLoader = ({ type = 'text', count = 1, gridColumns = 1 }) => {
   const getSkeletonContent = () => {
     switch (type) {
       case 'image':
-        return <div style={{ ...skeletonStyle, height: '200px' }} />;
+        return (
+          <div style={{ ...skeletonStyle, height: '200px' }}>
+            <div style={shimmerStyle} />
+          </div>
+        );
       case 'card':
         return (
           <div style={{ ...skeletonStyle, padding: '15px' }}>
-            <div style={{ height: '20px', marginBottom: '10px' }} />
-            <div style={{ height: '15px', width: '80%', marginBottom: '5px' }} />
-            <div style={{ height: '15px', width: '60%' }} />
+            <div style={{ ...skeletonStyle, height: '20px', marginBottom: '10px' }}>
+              <div style={shimmerStyle} />
+            </div>
+            <div style={{ ...skeletonStyle, height: '15px', width: '80%', marginBottom: '5px' }}>
+              <div style={shimmerStyle} />
+            </div>
+            <div style={{ ...skeletonStyle, height: '15px', width: '60%', marginBottom: 0 }}>
+              <div style={shimmerStyle} />
+            </div>
           </div>
         );
       case 'text':
       default:
-        return <div style={{ ...skeletonStyle, height: '20px' }} />;
+        return (
+          <div style={{ ...skeletonStyle, height: '20px' }}>
+            <div style={shimmerStyle} />
+          </div>
+        );
     }
   };
 
