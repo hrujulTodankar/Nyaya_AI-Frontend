@@ -124,7 +124,7 @@ const CaseSummaryCard = ({
           lineHeight: '1.6',
           fontSize: '14px'
         }}>
-          {summaryAnalysis}
+          <em>Based on currently available information: </em>{summaryAnalysis}
         </p>
       </div>
 

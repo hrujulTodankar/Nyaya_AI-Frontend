@@ -10,7 +10,7 @@ const DisclaimerBox = ({ text }) => {
       fontSize: '14px',
       color: '#856404'
     }}>
-      <strong>Disclaimer:</strong> {text}
+      <strong>Disclaimer:</strong> {text || "This guidance may evolve as more details are added."}
     </div>
   )
 }
