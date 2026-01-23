@@ -1,4 +1,5 @@
 import React from 'react';
+import './SkeletonLoader.css';
 
 const SkeletonLoader = ({ type = 'text', count = 1, gridColumns = 1 }) => {
   const skeletonStyle = {
@@ -52,33 +53,26 @@ const SkeletonLoader = ({ type = 'text', count = 1, gridColumns = 1 }) => {
   };
 
   const renderSkeletons = () => {
-    const skeletons = [];
-    for (let i = 0; i < count; i++) {
-      skeletons.push(
-        <div key={i} style={{ marginBottom: '15px' }}>
-          {getSkeletonContent()}
-        </div>
-      );
-    }
-    return skeletons;
+    return Array.from({ length: count }, (_, i) => (
+      <div key={i} style={{ marginBottom: '15px' }}>
+        {getSkeletonContent()}
+      </div>
+    ));
   };
 
   return (
-    <div style={{ 
-      display: 'grid', 
-      gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, 
-      gap: '20px',
-      width: '100%'
-    }}>
+    <div 
+      style={{ 
+        display: 'grid', 
+        gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, 
+        gap: '20px',
+        width: '100%'
+      }}
+      role="status"
+      aria-busy="true"
+    >
+      <span className="visually-hidden">Loading content...</span>
       {renderSkeletons()}
-      <style>
-        {`
-          @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-          }
-        `}
-      </style>
     </div>
   );
 };

@@ -71,6 +71,12 @@
             100% { transform: translateX(100%); }
         }
         
+        @media (prefers-reduced-motion: reduce) {
+            .skeleton-shimmer {
+                animation: none;
+            }
+        }
+        
         #loading-overlay.hidden {
             opacity: 0;
             pointer-events: none;
@@ -78,8 +84,8 @@
     </style>
 </head>
 <body>
-    <div id="loading-overlay">
-        <div class="skeleton-loader">
+    <div id="loading-overlay" aria-busy="true">
+        <div class="skeleton-loader" role="status" aria-live="polite" aria-label="Loading content">
             <div class="skeleton-item" style="height: 30px; width: 60%; margin-bottom: 20px;">
                 <div class="skeleton-shimmer"></div>
             </div>
@@ -89,7 +95,7 @@
             <div class="skeleton-item" style="height: 20px; width: 80%;">
                 <div class="skeleton-shimmer"></div>
             </div>
-            <div class="skeleton-item" style="height: 20px; width: 70%;">
+            <div class="skeleton-item" style="height: 20px;">
                 <div class="skeleton-shimmer"></div>
             </div>
         </div>
