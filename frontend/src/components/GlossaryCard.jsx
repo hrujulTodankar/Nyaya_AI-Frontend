@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 const GlossaryCard = ({
   terms,
   jurisdiction,
-  caseType
+  caseType,
+  traceId
 }) => {
   // Error handling for missing required data
   if (!terms || !Array.isArray(terms) || terms.length === 0 || !jurisdiction) {
@@ -14,6 +15,19 @@ const GlossaryCard = ({
           <p style={{ color: '#6c757d' }}>
             Glossary data is currently unavailable or incomplete.
           </p>
+          {/* Display trace_id for debugging */}
+          {traceId && (
+            <div style={{ 
+              marginTop: '15px', 
+              padding: '8px', 
+              backgroundColor: '#f8f9fa', 
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontFamily: 'monospace'
+            }}>
+              Trace ID: {traceId}
+            </div>
+          )}
         </div>
       </div>
     );

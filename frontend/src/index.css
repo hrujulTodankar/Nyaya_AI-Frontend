@@ -273,6 +273,58 @@ body {
   body::after {
     background-size: 80px 80px, 150px 150px;
   }
+
+  /* Responsive grid for mobile - single column */
+  .consultation-card > div[style*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Tablet breakpoint */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    padding: 30px 25px;
+  }
+
+  .consultation-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+
+  .consultation-card {
+    padding: 25px;
+  }
+
+  /* Two-column grid for tablet */
+  .consultation-card > div[style*="grid"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Adjust font sizes for tablet */
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  h2 {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* Desktop breakpoint */
+@media (min-width: 1025px) {
+  .container {
+    max-width: 1200px;
+    padding: 40px 30px;
+  }
+
+  .consultation-card {
+    padding: 30px;
+  }
+
+  /* Three-column grid for desktop */
+  .consultation-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
 }
 
 /* Accessibility improvements */

@@ -1,6 +1,22 @@
 import React, { useState } from 'react'
 import { legalQueryService } from '../services/nyayaApi.js'
 
+// Validate that traceId is a valid non-empty string
+const isValidTraceId = (traceId) => {
+  return typeof traceId === 'string' && traceId.length > 0 && traceId.trim().length > 0
+}
+
+// Validate that feedback value is a boolean
+const isValidFeedbackValue = (value) => {
+  return typeof value === 'boolean'
+}
+
+// Validate feedback type is one of the allowed types
+const isValidFeedbackType = (type) => {
+  const allowedTypes = ['helpful', 'clear', 'matches_situation', 'clarity', 'correctness', 'usefulness']
+  return allowedTypes.includes(type)
+}
+
 const FeedbackButtons = ({ traceId, context = '' }) => {
   const [feedback, setFeedback] = useState({
     helpful: null, // true, false, or null
@@ -8,22 +24,54 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
     matchesSituation: null // true, false, or null
   })
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(null)
 
   const submitFeedback = async (type, value) => {
-    if (!traceId) return
+    // Validate traceId before sending signal
+    if (!isValidTraceId(traceId)) {
+      setError('Invalid trace ID - feedback cannot be submitted')
+      console.warn('Attempted to submit feedback with invalid traceId:', traceId)
+      return
+    }
 
+    // Validate feedback value
+    if (!isValidFeedbackValue(value)) {
+      setError('Invalid feedback value')
+      console.warn('Attempted to submit feedback with invalid value:', value)
+      return
+    }
+
+    // Validate feedback type
+    if (!isValidFeedbackType(type)) {
+      setError('Invalid feedback type')
+      console.warn('Attempted to submit feedback with invalid type:', type)
+      return
+    }
+
+    setError(null)
     setSubmitting(true)
     try {
+      // Map boolean feedback to 1-5 rating scale
+      // true → 5 (positive), false → 1 (negative)
+      const rating = value ? 5 : 1
+      
       const feedbackData = {
         trace_id: traceId,
-        rating: value ? 1 : 0,
+        rating: rating,
         feedback_type: type,
         comment: `${context} - ${type}: ${value ? 'positive' : 'negative'}`
       }
 
-      await legalQueryService.submitFeedback(feedbackData)
-      console.log(`Feedback submitted: ${type} = ${value}`)
+      const result = await legalQueryService.submitFeedback(feedbackData)
+      
+      if (result.success) {
+        console.log(`Feedback submitted successfully: ${type} = ${value}`)
+      } else {
+        setError(result.error || 'Failed to submit feedback')
+        console.error('Feedback submission error:', result.error)
+      }
     } catch (error) {
+      setError('Failed to submit feedback')
       console.error('Failed to submit feedback:', error)
     } finally {
       setSubmitting(false)
@@ -189,6 +237,21 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
           </button>
         </div>
       </div>
+
+      {/* Error display */}
+      {error && (
+        <div style={{
+          marginTop: '15px',
+          padding: '10px',
+          backgroundColor: '#f8d7da',
+          border: '1px solid #f5c6cb',
+          borderRadius: '6px',
+          color: '#721c24',
+          fontSize: '13px'
+        }}>
+          {error}
+        </div>
+      )}
     </div>
   )
 }

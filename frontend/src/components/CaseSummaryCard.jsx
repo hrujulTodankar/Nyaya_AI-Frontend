@@ -10,7 +10,8 @@ const CaseSummaryCard = ({
   summaryAnalysis,
   dateFiled,
   status,
-  parties
+  parties,
+  traceId
 }) => {
   // Error handling for missing required data
   if (!title || !overview || !keyFacts || !jurisdiction || confidence === undefined || !summaryAnalysis) {
@@ -21,6 +22,19 @@ const CaseSummaryCard = ({
           <p style={{ color: '#6c757d' }}>
             Case summary data is currently unavailable or incomplete.
           </p>
+          {/* Display trace_id for debugging */}
+          {traceId && (
+            <div style={{ 
+              marginTop: '15px', 
+              padding: '8px', 
+              backgroundColor: '#f8f9fa', 
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontFamily: 'monospace'
+            }}>
+              Trace ID: {traceId}
+            </div>
+          )}
         </div>
       </div>
     );

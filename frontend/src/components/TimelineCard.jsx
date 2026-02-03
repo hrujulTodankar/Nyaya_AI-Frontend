@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TimelineCard = ({ events, jurisdiction, caseId }) => {
+const TimelineCard = ({ events, jurisdiction, caseId, traceId }) => {
   // Error handling for missing required data
   if (!events || !Array.isArray(events) || events.length === 0 || !jurisdiction || !caseId) {
     return (
@@ -10,6 +10,19 @@ const TimelineCard = ({ events, jurisdiction, caseId }) => {
           <p style={{ color: '#6c757d' }}>
             Timeline data is currently unavailable or incomplete.
           </p>
+          {/* Display trace_id for debugging */}
+          {traceId && (
+            <div style={{ 
+              marginTop: '15px', 
+              padding: '8px', 
+              backgroundColor: '#f8f9fa', 
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontFamily: 'monospace'
+            }}>
+              Trace ID: {traceId}
+            </div>
+          )}
         </div>
       </div>
     );

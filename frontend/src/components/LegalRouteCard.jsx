@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LegalRouteCard = ({ routes, jurisdiction, caseType }) => {
+const LegalRouteCard = ({ routes, jurisdiction, caseType, traceId }) => {
   // Error handling for missing required data
   if (!routes || !Array.isArray(routes) || routes.length === 0 || !jurisdiction || !caseType) {
     return (
@@ -10,6 +10,19 @@ const LegalRouteCard = ({ routes, jurisdiction, caseType }) => {
           <p style={{ color: '#6c757d' }}>
             Legal route data is currently unavailable or incomplete.
           </p>
+          {/* Display trace_id for debugging */}
+          {traceId && (
+            <div style={{ 
+              marginTop: '15px', 
+              padding: '8px', 
+              backgroundColor: '#f8f9fa', 
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontFamily: 'monospace'
+            }}>
+              Trace ID: {traceId}
+            </div>
+          )}
         </div>
       </div>
     );

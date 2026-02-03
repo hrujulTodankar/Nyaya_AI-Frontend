@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import LegalQueryCard from './components/LegalQueryCard.jsx'
 import MultiJurisdictionCard from './components/MultiJurisdictionCard.jsx'
 import LegalConsultationCard from './components/LegalConsultationCard.jsx'
@@ -7,6 +7,9 @@ import LegalRouteCard from './components/LegalRouteCard.jsx'
 import TimelineCard from './components/TimelineCard.jsx'
 import GlossaryCard from './components/GlossaryCard.jsx'
 import JurisdictionInfoBar from './components/JurisdictionInfoBar.jsx'
+import EnforcementStatusCard from './components/EnforcementStatusCard.jsx'
+import SkeletonLoader from './components/SkeletonLoader.jsx'
+import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
 const sampleCaseSummary = {
@@ -203,29 +206,267 @@ const sampleJurisdictionInfo = {
   emergencyGuidance: "File FIR at nearest Police Station, contact local magistrate for immediate orders"
 };
 
+// Case Presentation Component - Wires components to real backend data
+const CasePresentation = ({ traceId, jurisdiction, caseType, caseId, useDemoData = false }) => {
+  const [caseData, setCaseData] = useState({
+    caseSummary: null,
+    legalRoutes: null,
+    timeline: null,
+    glossary: null,
+    jurisdictionInfo: null,
+    enforcementStatus: null
+  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [currentJurisdiction, setCurrentJurisdiction] = useState(jurisdiction || 'India')
+  const [retryCount, setRetryCount] = useState(0)
+
+  // Fetch all case data from backend including enforcement status
+  const fetchCaseData = useCallback(async () => {
+    // Demo mode: Use sample data only when explicitly enabled
+    if (useDemoData || !traceId) {
+      setCaseData({
+        caseSummary: sampleCaseSummary,
+        legalRoutes: sampleLegalRoutes,
+        timeline: sampleTimeline,
+        glossary: sampleGlossary,
+        jurisdictionInfo: sampleJurisdictionInfo,
+        enforcementStatus: null
+      })
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    try {
+      // Fetch case data and enforcement status in parallel
+      const [caseResult, enforcementResult] = await Promise.all([
+        casePresentationService.getAllCaseData(traceId, currentJurisdiction, caseType, caseId),
+        casePresentationService.getEnforcementStatus(traceId, currentJurisdiction)
+      ])
+
+      // Get enforcement status data
+      const enforcementStatus = enforcementResult.success ? enforcementResult.data : null
+
+      if (caseResult.success) {
+        // Use real backend data - no fallback to sample data
+        setCaseData({
+          caseSummary: caseResult.data.caseSummary,
+          legalRoutes: caseResult.data.legalRoutes,
+          timeline: caseResult.data.timeline,
+          glossary: caseResult.data.glossary,
+          jurisdictionInfo: caseResult.data.jurisdictionInfo,
+          enforcementStatus: enforcementStatus
+        })
+      } else {
+        // Real error - no fallback to sample data
+        setError(caseResult.error || 'Failed to load case data from backend')
+        setCaseData({
+          caseSummary: null,
+          legalRoutes: null,
+          timeline: null,
+          glossary: null,
+          jurisdictionInfo: null,
+          enforcementStatus: enforcementStatus
+        })
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to load case data')
+      setCaseData({
+        caseSummary: null,
+        legalRoutes: null,
+        timeline: null,
+        glossary: null,
+        jurisdictionInfo: null,
+        enforcementStatus: null
+      })
+    } finally {
+      setLoading(false)
+    }
+  }, [traceId, currentJurisdiction, caseType, caseId, useDemoData, retryCount])
+
+  // Fetch data on mount and when jurisdiction changes
+  useEffect(() => {
+    fetchCaseData()
+  }, [fetchCaseData])
+
+  // Handle jurisdiction change
+  const handleJurisdictionChange = (newJurisdiction) => {
+    setCurrentJurisdiction(newJurisdiction)
+    setRetryCount(0) // Reset retry count on jurisdiction change
+    fetchCaseData()
+  }
+
+  // Handle retry on error
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1)
+  }
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+        {/* Loading skeleton for case presentation */}
+        <div className="consultation-card" style={{ padding: '30px' }}>
+          <SkeletonLoader type="card" count={5} />
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <p style={{ color: '#6c757d', fontSize: '14px' }}>
+              Fetching case data from backend for {currentJurisdiction} jurisdiction...
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+      {/* Error notification with retry option */}
+      {error && (
+        <div style={{
+          padding: '20px',
+          backgroundColor: 'rgba(220, 53, 69, 0.1)',
+          border: '1px solid rgba(220, 53, 69, 0.3)',
+          borderRadius: '8px',
+          color: '#721c24'
+        }}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'flex-start',
+            gap: '15px'
+          }}>
+            <div style={{ flex: 1 }}>
+              <strong style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>
+                Error Loading Case Data
+              </strong>
+              <p style={{ margin: 0, fontSize: '13px', lineHeight: '1.5' }}>
+                {error}. The backend may be unreachable or returned an unexpected response.
+              </p>
+            </div>
+            <button
+              onClick={handleRetry}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#dc3545',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '13px',
+                fontWeight: '500',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Retry ({retryCount})
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Jurisdiction Switcher */}
+      <div className="consultation-card" style={{ padding: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '15px' }}>
+          <h3 style={{ margin: 0, color: '#2c3e50', fontWeight: '600' }}>Select Jurisdiction</h3>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {['India', 'UK', 'UAE'].map((j) => (
+              <button
+                key={j}
+                onClick={() => handleJurisdictionChange(j)}
+                style={{
+                  padding: '10px 20px',
+                  border: currentJurisdiction === j ? '2px solid #007bff' : '2px solid #e9ecef',
+                  borderRadius: '8px',
+                  backgroundColor: currentJurisdiction === j ? 'rgba(0, 123, 255, 0.1)' : '#fff',
+                  color: currentJurisdiction === j ? '#007bff' : '#495057',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                {j}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Enforcement Status Card - Shows BLOCK, ESCALATE, SOFT_REDIRECT states */}
+      <EnforcementStatusCard 
+        enforcementStatus={caseData.enforcementStatus} 
+        traceId={traceId}
+      />
+
+      {/* Jurisdiction Info Bar */}
+      <JurisdictionInfoBar jurisdiction={caseData.jurisdictionInfo} />
+
+      {/* Case Summary Card */}
+      <CaseSummaryCard {...caseData.caseSummary} traceId={traceId} />
+
+      {/* Legal Route Card */}
+      <LegalRouteCard {...caseData.legalRoutes} traceId={traceId} />
+
+      {/* Timeline Card */}
+      <TimelineCard {...caseData.timeline} traceId={traceId} />
+
+      {/* Glossary Card */}
+      <GlossaryCard {...caseData.glossary} traceId={traceId} />
+    </div>
+  )
+}
+
 function App() {
   const [activeCard, setActiveCard] = useState('query')
+  const [queryResult, setQueryResult] = useState(null)
+  const [selectedJurisdiction, setSelectedJurisdiction] = useState('India')
+
+  // Handle query submission and extract trace ID
+  const handleQuerySubmit = async (queryData) => {
+    try {
+      const result = await casePresentationService.submitQuery(queryData)
+      if (result.success) {
+        setQueryResult(result)
+      }
+    } catch (error) {
+      console.error('Query submission error:', error)
+    }
+  }
+
+  // Handle jurisdiction selection from query results
+  const handleJurisdictionSelect = (jurisdiction) => {
+    setSelectedJurisdiction(jurisdiction)
+    setActiveCard('case')
+  }
 
   const renderActiveCard = () => {
     switch (activeCard) {
       case 'query':
-        return <LegalQueryCard />
+        return <LegalQueryCard onSubmit={handleQuerySubmit} onJurisdictionSelect={handleJurisdictionSelect} />
       case 'multi':
         return <MultiJurisdictionCard />
       case 'consultation':
         return <LegalConsultationCard />
+      case 'case':
+        return (
+          <CasePresentation
+            traceId={queryResult?.trace_id || null}
+            jurisdiction={selectedJurisdiction}
+            caseType="General Legal Matter"
+            caseId="CASE-2024-001"
+          />
+        )
       case 'test':
         return (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-            <JurisdictionInfoBar jurisdiction={sampleJurisdictionInfo} />
-            <CaseSummaryCard {...sampleCaseSummary} />
-            <LegalRouteCard {...sampleLegalRoutes} />
-            <TimelineCard {...sampleTimeline} />
-            <GlossaryCard {...sampleGlossary} />
-          </div>
+          <CasePresentation
+            traceId={null}
+            jurisdiction={selectedJurisdiction}
+            caseType="General Legal Matter"
+            caseId="CASE-2024-001"
+          />
         )
       default:
-        return <LegalQueryCard />
+        return <LegalQueryCard onSubmit={handleQuerySubmit} onJurisdictionSelect={handleJurisdictionSelect} />
     }
   }
 
@@ -323,7 +564,8 @@ function App() {
           { id: 'query', label: 'Ask Your Legal Question', description: 'Get personalized legal guidance' },
           { id: 'multi', label: 'Compare Across Jurisdictions', description: 'Analyze laws across regions' },
           { id: 'consultation', label: 'Schedule Consultation', description: 'Book a detailed legal review' },
-          { id: 'test', label: 'Test Case Components', description: 'View sample case presentation components' }
+          { id: 'case', label: 'Case Presentation', description: 'View detailed case analysis with jurisdiction switching' },
+          { id: 'test', label: 'Demo Mode', description: 'View sample case presentation components' }
         ].map((option) => (
           <button
             key={option.id}
