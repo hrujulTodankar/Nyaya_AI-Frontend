@@ -18,6 +18,15 @@ export const India = {
   },
 };
 
+export const MissingData = {
+  args: {
+    country: '',
+    courtSystem: '',
+    authorityFraming: '',
+    emergencyGuidance: ''
+  },
+};
+
 export const UAE = {
   args: {
     country: 'United Arab Emirates',

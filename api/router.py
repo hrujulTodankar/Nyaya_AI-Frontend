@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Query
 from typing import Dict, Any, List, Optional
 import asyncio
 from api.schemas import (
@@ -355,3 +355,124 @@ async def _emit_rl_signal_received_event(trace_id: str, helpful: bool, clear: bo
         }
     }
     # In real implementation, this would be added to the ledger
+
+# ==================== Case Presentation Endpoints ====================
+
+@router.get("/case_summary")
+async def get_case_summary(
+    trace_id: str = Query(..., description="Trace identifier from query"),
+    jurisdiction: str = Query(..., description="Selected jurisdiction")
+):
+    """Fetch case summary for presentation components."""
+    try:
+        # Build response based on jurisdiction
+        return ResponseBuilder.build_case_summary_response(trace_id, jurisdiction)
+    except Exception as e:
+        raise HTTPException(
+            status_code=404,
+            detail=ResponseBuilder.build_error_response(
+                "CASE_SUMMARY_NOT_FOUND",
+                f"Case summary not found for trace {trace_id}",
+                trace_id
+            ).dict()
+        )
+
+@router.get("/legal_routes")
+async def get_legal_routes(
+    trace_id: str = Query(..., description="Trace identifier from query"),
+    jurisdiction: str = Query(..., description="Selected jurisdiction"),
+    case_type: str = Query(..., description="Type of legal case")
+):
+    """Fetch legal routes/pathways for the case."""
+    try:
+        return ResponseBuilder.build_legal_routes_response(trace_id, jurisdiction, case_type)
+    except Exception as e:
+        raise HTTPException(
+            status_code=404,
+            detail=ResponseBuilder.build_error_response(
+                "LEGAL_ROUTES_NOT_FOUND",
+                f"Legal routes not found for trace {trace_id}",
+                trace_id
+            ).dict()
+        )
+
+@router.get("/timeline")
+async def get_timeline(
+    trace_id: str = Query(..., description="Trace identifier from query"),
+    jurisdiction: str = Query(..., description="Selected jurisdiction"),
+    case_id: str = Query(..., description="Case identifier")
+):
+    """Fetch timeline events for the case."""
+    try:
+        return ResponseBuilder.build_timeline_response(trace_id, jurisdiction, case_id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=404,
+            detail=ResponseBuilder.build_error_response(
+                "TIMELINE_NOT_FOUND",
+                f"Timeline not found for trace {trace_id}",
+                trace_id
+            ).dict()
+        )
+
+@router.get("/glossary")
+async def get_glossary(
+    trace_id: str = Query(..., description="Trace identifier from query"),
+    jurisdiction: str = Query(..., description="Selected jurisdiction"),
+    case_type: str = Query(..., description="Type of legal case")
+):
+    """Fetch glossary terms for the case."""
+    try:
+        return ResponseBuilder.build_glossary_response(trace_id, jurisdiction, case_type)
+    except Exception as e:
+        raise HTTPException(
+            status_code=404,
+            detail=ResponseBuilder.build_error_response(
+                "GLOSSARY_NOT_FOUND",
+                f"Glossary not found for trace {trace_id}",
+                trace_id
+            ).dict()
+        )
+
+@router.get("/jurisdiction_info")
+async def get_jurisdiction_info(
+    jurisdiction: str = Query(..., description="Jurisdiction to fetch info for")
+):
+    """Fetch jurisdiction-specific information."""
+    try:
+        return ResponseBuilder.build_jurisdiction_info_response(jurisdiction)
+    except Exception as e:
+        raise HTTPException(
+            status_code=404,
+            detail=ResponseBuilder.build_error_response(
+                "JURISDICTION_INFO_NOT_FOUND",
+                f"Jurisdiction info not found for {jurisdiction}",
+                "global"
+            ).dict()
+        )
+
+@router.get("/enforcement_status")
+async def get_enforcement_status(
+    trace_id: str = Query(..., description="Trace identifier from query"),
+    jurisdiction: str = Query(..., description="Selected jurisdiction")
+):
+    """Fetch enforcement status for the legal pathway."""
+    try:
+        # Determine enforcement state based on jurisdiction and query context
+        # For demo purposes, return clear state
+        # In production, this would be determined by the agent's analysis
+        return ResponseBuilder.build_enforcement_status(
+            trace_id=trace_id,
+            state="clear",
+            reason="",
+            safe_explanation="This legal pathway is available for your case. You may proceed with confidence."
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=404,
+            detail=ResponseBuilder.build_error_response(
+                "ENFORCEMENT_STATUS_NOT_FOUND",
+                f"Enforcement status not found for trace {trace_id}",
+                trace_id
+            ).dict()
+        )

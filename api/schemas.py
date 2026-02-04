@@ -7,6 +7,15 @@ class UserRole(str, Enum):
     LAWYER = "lawyer"
     STUDENT = "student"
 
+# Enforcement-aware states for legal flow
+class EnforcementState(str, Enum):
+    """States that indicate legal enforcement requirements or restrictions."""
+    CLEAR = "clear"  # No enforcement requirements
+    BLOCK = "block"  # Path is blocked - cannot proceed
+    ESCALATE = "escalate"  # Requires escalation to higher authority
+    SOFT_REDIRECT = "soft_redirect"  # Suggest alternative pathway
+    CONDITIONAL = "conditional"  # Proceed with conditions
+
 class DomainHint(str, Enum):
     CRIMINAL = "criminal"
     CIVIL = "civil"
@@ -51,6 +60,17 @@ class FeedbackRequest(BaseModel):
     feedback_type: FeedbackType
     comment: Optional[str] = Field(None, max_length=1000)
 
+class EnforcementStatus(BaseModel):
+    """Represents the enforcement state of a legal pathway."""
+    state: EnforcementState = EnforcementState.CLEAR
+    reason: str = ""
+    blocked_path: Optional[str] = None
+    escalation_required: bool = False
+    escalation_target: Optional[str] = None
+    redirect_suggestion: Optional[str] = None
+    safe_explanation: str = ""
+    trace_id: str
+
 class NyayaResponse(BaseModel):
     domain: str
     jurisdiction: str
@@ -60,6 +80,7 @@ class NyayaResponse(BaseModel):
     provenance_chain: List[Dict[str, Any]] = []
     reasoning_trace: Dict[str, Any] = {}
     trace_id: str
+    enforcement_status: Optional[EnforcementStatus] = None
 
 class MultiJurisdictionResponse(BaseModel):
     comparative_analysis: Dict[str, NyayaResponse]

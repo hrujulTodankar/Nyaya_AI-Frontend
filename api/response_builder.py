@@ -1,7 +1,8 @@
 from typing import Dict, Any, List
 from api.schemas import (
     NyayaResponse, MultiJurisdictionResponse, ExplainReasoningResponse,
-    FeedbackResponse, TraceResponse, RLSignalResponse, ErrorResponse
+    FeedbackResponse, TraceResponse, RLSignalResponse, ErrorResponse,
+    EnforcementStatus, EnforcementState
 )
 from provenance_chain.lineage_tracer import tracer
 from provenance_chain.hash_chain_ledger import ledger
@@ -221,3 +222,339 @@ class ResponseBuilder:
         """Verify signature integrity across events."""
         # Placeholder - would verify HMAC signatures
         return True
+
+    # ==================== Case Presentation Response Builders ====================
+
+    @staticmethod
+    def build_case_summary_response(trace_id: str, jurisdiction: str) -> Dict[str, Any]:
+        """Build case summary response for frontend components."""
+        # Generate sample case summary based on jurisdiction
+        jurisdiction_prefix = jurisdiction.lower() if jurisdiction else "default"
+        
+        return {
+            "caseId": f"CASE-2024-001",
+            "title": f"Legal Analysis - {jurisdiction} Jurisdiction",
+            "overview": f"Comprehensive legal analysis based on the provided query, applicable to {jurisdiction} legal framework.",
+            "keyFacts": [
+                "Legal matter analyzed based on user query",
+                "Jurisdiction identified as " + jurisdiction,
+                "Relevant legal provisions identified",
+                "Case complexity assessed via confidence scoring"
+            ],
+            "jurisdiction": jurisdiction,
+            "confidence": 0.87,
+            "summaryAnalysis": f"This legal analysis for {jurisdiction} provides an overview of applicable laws and potential pathways. The analysis is based on general legal principles and may require jurisdiction-specific consultation for definitive advice.",
+            "dateFiled": "2024-07-15",
+            "status": "Analysis Complete",
+            "parties": {
+                "plaintiff": "Requesting Party",
+                "defendant": "N/A (General Analysis)"
+            },
+            "trace_id": trace_id
+        }
+
+    @staticmethod
+    def build_legal_routes_response(trace_id: str, jurisdiction: str, case_type: str) -> Dict[str, Any]:
+        """Build legal routes response for frontend components."""
+        routes_data = {
+            "India": [
+                {
+                    "name": "Mediation",
+                    "description": "Non-binding dispute resolution through a neutral third-party mediator.",
+                    "recommendation": "Recommended as first step for faster resolution.",
+                    "suitability": 0.95,
+                    "estimatedDuration": "2-4 weeks",
+                    "estimatedCost": "INR 50,000-100,000",
+                    "pros": ["Confidential", "Cost-effective", "Faster resolution"],
+                    "cons": ["Non-binding", "Requires mutual agreement"]
+                },
+                {
+                    "name": "Arbitration",
+                    "description": "Binding dispute resolution through private arbitration tribunal.",
+                    "recommendation": "Strong alternative for commercial disputes.",
+                    "suitability": 0.85,
+                    "estimatedDuration": "3-6 months",
+                    "estimatedCost": "INR 200,000-500,000",
+                    "pros": ["Binding", "Expert arbitrators", "Enforceable"],
+                    "cons": ["Limited appeal", "Can be costly"]
+                },
+                {
+                    "name": "Civil Litigation",
+                    "description": "Formal court proceedings through the judicial system.",
+                    "recommendation": "Consider when other options are exhausted.",
+                    "suitability": 0.60,
+                    "estimatedDuration": "1-3 years",
+                    "estimatedCost": "INR 300,000-1,000,000+",
+                    "pros": ["Binding judgment", "Right to appeal", "Wide remedies"],
+                    "cons": ["Lengthy", "Public record", "High costs"]
+                }
+            ],
+            "UK": [
+                {
+                    "name": "Small Claims Court",
+                    "description": "For claims under £10,000, simplified procedure.",
+                    "recommendation": "Ideal for lower-value disputes.",
+                    "suitability": 0.90,
+                    "estimatedDuration": "1-3 months",
+                    "estimatedCost": "£300-1,500",
+                    "pros": ["Simpler procedure", "Lower costs", "No solicitor required"],
+                    "cons": ["Limited to £10,000", "Limited appeals"]
+                },
+                {
+                    "name": "County Court",
+                    "description": "For claims up to £100,000, standard procedure.",
+                    "recommendation": "Standard route for most civil disputes.",
+                    "suitability": 0.80,
+                    "estimatedDuration": "6-12 months",
+                    "estimatedCost": "£1,000-5,000",
+                    "pros": ["Comprehensive procedure", "Range of remedies"],
+                    "cons": ["Costs can escalate", "Time-consuming"]
+                }
+            ],
+            "UAE": [
+                {
+                    "name": "Amicable Settlement",
+                    "description": "Court-mediated settlement before litigation.",
+                    "recommendation": "Encouraged as first step under UAE law.",
+                    "suitability": 0.92,
+                    "estimatedDuration": "1-2 months",
+                    "estimatedCost": "AED 5,000-15,000",
+                    "pros": ["Quick", "Cost-effective", "Preserves relationships"],
+                    "cons": ["Requires agreement", "Non-binding if no settlement"]
+                },
+                {
+                    "name": "Civil Court",
+                    "description": "Federal court proceedings for civil matters.",
+                    "recommendation": "Standard litigation route for unresolved disputes.",
+                    "suitability": 0.75,
+                    "estimatedDuration": "3-6 months",
+                    "estimatedCost": "AED 20,000-100,000",
+                    "pros": ["Binding judgment", "Enforceable"],
+                    "cons": ["Formal process", "Legal representation required"]
+                }
+            ]
+        }
+        
+        routes = routes_data.get(jurisdiction, routes_data.get("India"))
+        
+        return {
+            "routes": routes,
+            "jurisdiction": jurisdiction,
+            "caseType": case_type,
+            "trace_id": trace_id
+        }
+
+    @staticmethod
+    def build_timeline_response(trace_id: str, jurisdiction: str, case_id: str) -> Dict[str, Any]:
+        """Build timeline response for frontend components."""
+        return {
+            "events": [
+                {
+                    "id": "query-received",
+                    "date": "2024-07-15",
+                    "title": "Query Received",
+                    "description": "Legal query submitted and initial processing started.",
+                    "type": "milestone",
+                    "status": "completed",
+                    "documents": ["Query_Submission.pdf"],
+                    "parties": ["Requesting Party", "Nyaya AI System"]
+                },
+                {
+                    "id": "jurisdiction-identified",
+                    "date": "2024-07-15",
+                    "title": "Jurisdiction Identified",
+                    "description": f"Jurisdiction resolved to {jurisdiction} based on query analysis.",
+                    "type": "milestone",
+                    "status": "completed"
+                },
+                {
+                    "id": "legal-analysis",
+                    "date": "2024-07-16",
+                    "title": "Legal Analysis",
+                    "description": "Analysis of applicable laws and legal provisions.",
+                    "type": "step",
+                    "status": "completed"
+                },
+                {
+                    "id": "route-determination",
+                    "date": "2024-07-16",
+                    "title": "Legal Routes Determined",
+                    "description": "Available legal pathways identified and evaluated.",
+                    "type": "step",
+                    "status": "completed"
+                },
+                {
+                    "id": "report-generation",
+                    "date": "2024-07-17",
+                    "title": "Report Generation",
+                    "description": "Comprehensive legal analysis report generated.",
+                    "type": "step",
+                    "status": "completed"
+                },
+                {
+                    "id": "recommendations",
+                    "date": "2024-07-18",
+                    "title": "Recommendations Ready",
+                    "description": "Final recommendations and next steps provided.",
+                    "type": "milestone",
+                    "status": "pending"
+                }
+            ],
+            "jurisdiction": jurisdiction,
+            "caseId": case_id,
+            "trace_id": trace_id
+        }
+
+    @staticmethod
+    def build_glossary_response(trace_id: str, jurisdiction: str, case_type: str) -> Dict[str, Any]:
+        """Build glossary response for frontend components."""
+        # Common legal terms with jurisdiction-specific definitions
+        terms = [
+            {
+                "term": "Jurisdiction",
+                "definition": f"The authority of {jurisdiction} courts to hear and decide legal matters.",
+                "context": "Determines which legal framework applies to your case.",
+                "relatedTerms": ["Venue", "Forum", "Legal Authority"],
+                "jurisdiction": jurisdiction,
+                "confidence": 0.95
+            },
+            {
+                "term": "Cause of Action",
+                "definition": "The legal basis for a lawsuit, comprising facts giving rise to a claim.",
+                "context": "The facts that establish your right to legal relief.",
+                "relatedTerms": ["Claim", "Legal Claim", "Remedy"],
+                "jurisdiction": jurisdiction,
+                "confidence": 0.88
+            },
+            {
+                "term": "Limitation Period",
+                "definition": "The maximum time after an event within which legal proceedings may be initiated.",
+                "context": "Important deadline for filing your legal claim.",
+                "relatedTerms": ["Statute of Limitations", "Time Limit", "Deadline"],
+                "jurisdiction": jurisdiction,
+                "confidence": 0.92
+            },
+            {
+                "term": "Remedy",
+                "definition": "The means by which a right is enforced or a violation of a right is prevented or compensated.",
+                "context": "The type of relief you can seek through legal action.",
+                "relatedTerms": ["Damages", "Injunction", "Specific Performance"],
+                "jurisdiction": jurisdiction,
+                "confidence": 0.85
+            },
+            {
+                "term": "Evidence",
+                "definition": "Any type of proof legally presented at trial to persuade the court.",
+                "context": "Documentation and proof to support your legal claims.",
+                "relatedTerms": ["Proof", "Documentation", "Witness Testimony"],
+                "jurisdiction": jurisdiction,
+                "confidence": 0.90
+            }
+        ]
+        
+        return {
+            "terms": terms,
+            "jurisdiction": jurisdiction,
+            "caseType": case_type,
+            "trace_id": trace_id
+        }
+
+    @staticmethod
+    def build_jurisdiction_info_response(jurisdiction: str) -> Dict[str, Any]:
+        """Build jurisdiction info response for frontend components."""
+        jurisdiction_info = {
+            "India": {
+                "country": "India",
+                "courtSystem": "Indian Judicial System",
+                "authorityFraming": "Formal and procedural, emphasizing due process and evidence-based decisions",
+                "emergencyGuidance": "File FIR at nearest Police Station, contact local magistrate for immediate orders",
+                "legalFramework": "Common Law System based on English law",
+                "limitationAct": "Limitation Act, 1963",
+                "constitution": "Constitution of India (1950)"
+            },
+            "UK": {
+                "country": "United Kingdom",
+                "courtSystem": "UK Courts and Tribunals",
+                "authorityFraming": "Adversarial system with emphasis on precedent and judicial discretion",
+                "emergencyGuidance": "Contact Police (999) or Crown Prosecution Service for urgent matters",
+                "legalFramework": "Common Law System",
+                "limitationAct": "Limitation Act 1980",
+                "constitution": "Uncodified Constitution (Parliamentary Sovereignty)"
+            },
+            "UAE": {
+                "country": "United Arab Emirates",
+                "courtSystem": "UAE Federal Judiciary",
+                "authorityFraming": "Civil law system with Islamic Sharia influences, emphasizing reconciliation",
+                "emergencyGuidance": "Contact Public Prosecution or local police for immediate legal intervention",
+                "legalFramework": "Civil Law System with Sharia principles",
+                "limitationAct": "Federal Law No. 5 of 1985 (Civil Transactions Law)",
+                "constitution": "UAE Constitution (1971)"
+            }
+        }
+        
+        info = jurisdiction_info.get(jurisdiction, jurisdiction_info.get("India"))
+        
+        return {
+            "country": info.get("country"),
+            "courtSystem": info.get("courtSystem"),
+            "authorityFraming": info.get("authorityFraming"),
+            "emergencyGuidance": info.get("emergencyGuidance"),
+            "legalFramework": info.get("legalFramework"),
+            "limitationAct": info.get("limitationAct"),
+            "constitution": info.get("constitution"),
+            "jurisdiction": jurisdiction
+        }
+
+    # ==================== Enforcement Status Builders ====================
+
+    @staticmethod
+    def build_enforcement_status(
+        trace_id: str,
+        state: str = "clear",
+        reason: str = "",
+        blocked_path: Optional[str] = None,
+        escalation_required: bool = False,
+        escalation_target: Optional[str] = None,
+        redirect_suggestion: Optional[str] = None,
+        safe_explanation: str = ""
+    ) -> Dict[str, Any]:
+        """Build enforcement status response for UI."""
+        # Validate state
+        try:
+            enforcement_state = EnforcementState(state)
+        except ValueError:
+            enforcement_state = EnforcementState.CLEAR
+        
+        # Generate safe explanation based on state
+        if not safe_explanation:
+            safe_explanation = ResponseBuilder._generate_safe_explanation(
+                enforcement_state, reason, blocked_path, redirect_suggestion
+            )
+        
+        return {
+            "state": enforcement_state.value,
+            "reason": reason,
+            "blocked_path": blocked_path,
+            "escalation_required": escalation_required,
+            "escalation_target": escalation_target,
+            "redirect_suggestion": redirect_suggestion,
+            "safe_explanation": safe_explanation,
+            "trace_id": trace_id
+        }
+
+    @staticmethod
+    def _generate_safe_explanation(
+        state: EnforcementState, 
+        reason: str, 
+        blocked_path: Optional[str] = None,
+        redirect_suggestion: Optional[str] = None
+    ) -> str:
+        """Generate safe explanation for users based on enforcement state."""
+        explanations = {
+            EnforcementState.CLEAR: "This legal pathway is available for your case. You may proceed with confidence.",
+            EnforcementState.BLOCK: f"This pathway is currently blocked. {reason or 'Please consult a legal professional for alternative options.'}",
+            EnforcementState.ESCALATE: f"This matter requires escalation to a higher authority. {reason or 'Your case will be reviewed by senior legal counsel.'}",
+            EnforcementState.SOFT_REDIRECT: f"Consider an alternative pathway. {reason or redirect_suggestion or 'This option may better suit your legal needs.'}",
+            EnforcementState.CONDITIONAL: f"This pathway is available with conditions. {reason or 'Please review the specific requirements for your case.'}"
+        }
+        return explanations.get(state, "Please consult a legal professional for guidance.")
