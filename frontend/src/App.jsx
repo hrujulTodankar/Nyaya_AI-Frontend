@@ -10,6 +10,7 @@ import JurisdictionInfoBar from './components/JurisdictionInfoBar.jsx'
 import EnforcementStatusCard from './components/EnforcementStatusCard.jsx'
 import SkeletonLoader from './components/SkeletonLoader.jsx'
 import GlareHover from './components/GlareHover.jsx'
+import AnimatedText from './components/AnimatedText.jsx'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -504,17 +505,18 @@ function App() {
             <span style={{ fontSize: '24px', color: 'white' }}>⚖️</span>
           </div>
           <div>
-            <h1 style={{
-              fontSize: '2.5rem',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              margin: 0,
-              fontWeight: '800',
-              letterSpacing: '-0.5px'
-            }}>
-              Nyaya AI
-            </h1>
+            <AnimatedText 
+              text="Nyaya AI"
+              style={{
+                fontSize: '2.5rem',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                margin: 0,
+                fontWeight: '800',
+                letterSpacing: '-0.5px'
+              }}
+            />
             <p style={{
               fontSize: '1rem',
               color: '#6b7280',
