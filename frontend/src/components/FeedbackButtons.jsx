@@ -89,7 +89,9 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
       padding: '15px',
       backgroundColor: '#f8f9fa',
       borderRadius: '8px',
-      border: '1px solid #e9ecef'
+      border: '1px solid #e9ecef',
+      position: 'relative',
+      zIndex: 10
     }}>
       <h5 style={{
         fontSize: '14px',
