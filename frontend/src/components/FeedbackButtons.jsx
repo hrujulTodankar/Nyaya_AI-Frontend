@@ -29,9 +29,14 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
   const submitFeedback = async (type, value) => {
     // Validate traceId before sending signal
     if (!isValidTraceId(traceId)) {
-      setError('Invalid trace ID - feedback cannot be submitted')
-      console.warn('Attempted to submit feedback with invalid traceId:', traceId)
-      return
+      console.log('Skipping feedback submission - no valid trace ID (demo mode)')
+      return // Silently skip in demo mode
+    }
+
+    // Skip if trace ID is a mock ID
+    if (traceId.startsWith('mock_')) {
+      console.log('Skipping feedback submission - mock trace ID (demo mode)')
+      return // Silently skip for mock IDs
     }
 
     // Validate feedback value
