@@ -531,10 +531,104 @@ export const healthService = {
   }
 }
 
+// Procedure Service - New endpoints
+export const procedureService = {
+  async analyzeProcedure(data) {
+    try {
+      const response = await apiClient.post('/nyaya/procedures/analyze', data)
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  },
+
+  async getProcedureSummary(country, domain) {
+    try {
+      const response = await apiClient.get(`/nyaya/procedures/summary/${country}/${domain}`)
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  },
+
+  async assessEvidence(data) {
+    try {
+      const response = await apiClient.post('/nyaya/procedures/evidence/assess', data)
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  },
+
+  async analyzeFailure(data) {
+    try {
+      const response = await apiClient.post('/nyaya/procedures/failure/analyze', data)
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  },
+
+  async compareProcedures(data) {
+    try {
+      const response = await apiClient.post('/nyaya/procedures/compare', data)
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  },
+
+  async listProcedures() {
+    try {
+      const response = await apiClient.get('/nyaya/procedures/list')
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  },
+
+  async getSchemas() {
+    try {
+      const response = await apiClient.get('/nyaya/procedures/schemas')
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  },
+
+  async getEnhancedAnalysis(jurisdiction, domain) {
+    try {
+      const response = await apiClient.get(`/nyaya/procedures/enhanced_analysis/${jurisdiction}/${domain}`)
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  },
+
+  async getDomainClassification(jurisdiction) {
+    try {
+      const response = await apiClient.get(`/nyaya/procedures/domain_classification/${jurisdiction}`)
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data||message || error.message }
+    }
+  },
+
+  async getLegalSections(jurisdiction, domain) {
+    try {
+      const response = await apiClient.get(`/nyaya/procedures/legal_sections/${jurisdiction}/${domain}`)
+      return { success: true, data: response.data }
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message || error.message }
+    }
+  }
+}
+
 export default {
   legalQuery: legalQueryService,
   casePresentation: casePresentationService,
-  health: healthService
+  health: healthService,
+  procedure: procedureService
 }
 
 // Export the sendRLSignal function directly for convenience
