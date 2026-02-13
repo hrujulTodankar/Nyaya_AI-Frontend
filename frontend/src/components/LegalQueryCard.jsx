@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import FeedbackButtons from './FeedbackButtons.jsx'
+import { legalQueryService } from '../services/nyayaApi.js'
 
 const LegalQueryCard = () => {
   const [query, setQuery] = useState('')
@@ -12,20 +13,21 @@ const LegalQueryCard = () => {
     if (!query.trim()) return
 
     setIsSubmitting(true)
+    setResponse(null)
     
-    // Simulate API call to Nyaya AI backend
     try {
-      // This would integrate with the actual Nyaya AI API
-      setTimeout(() => {
-        const mockTraceId = 'mock_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
-        setTraceId(mockTraceId)
+      const result = await legalQueryService.submitQuery({
+        query: query,
+        jurisdiction_hint: 'India'
+      })
+
+      if (result.success) {
+        setTraceId(result.trace_id)
         setResponse({
-          confidence: 0.85,
-          jurisdiction: 'India',
-          caseType: query.toLowerCase().includes('contract') ? 'Contract Dispute' :
-                     query.toLowerCase().includes('property') ? 'Property Dispute' :
-                     query.toLowerCase().includes('criminal') ? 'Criminal Matter' : 'Civil Matter',
-          analysis: `Based on your legal question, under Indian law, your situation involves several important considerations. The facts you've described suggest potential legal remedies and courses of action that should be carefully evaluated.`,
+          confidence: result.data.confidence || 0.85,
+          jurisdiction: result.data.jurisdiction || 'India',
+          caseType: result.data.domain || 'General Legal Matter',
+          analysis: result.data.reasoning_trace?.summary || 'Legal analysis completed. Please consult with a legal professional for detailed advice.',
           nextSteps: [
             {
               step: 'Document Everything',
@@ -38,49 +40,26 @@ const LegalQueryCard = () => {
               description: 'Schedule consultation with a lawyer specializing in this area to review your specific circumstances',
               priority: 'High',
               timeline: 'Within 1 week'
-            },
-            {
-              step: 'Send Legal Notice',
-              description: 'Consider sending a formal legal notice to the other party outlining your grievances and demands',
-              priority: 'Medium',
-              timeline: 'Within 2-3 weeks'
-            },
-            {
-              step: 'Explore Settlement',
-              description: 'Attempt negotiation or mediation before pursuing formal litigation',
-              priority: 'Medium',
-              timeline: 'Within 1 month'
             }
           ],
-          jurisdictionProcedure: query.toLowerCase().includes('contract') ? [
-            { step: 1, title: 'Send Legal Notice', description: 'Send formal legal notice under Section 80 CPC demanding resolution', duration: '1-2 weeks' },
-            { step: 2, title: 'Attempt Mediation', description: 'Engage in court-annexed or private mediation to resolve dispute amicably', duration: '2-4 weeks' },
-            { step: 3, title: 'File Civil Suit', description: 'File suit in appropriate civil court for breach of contract and damages', duration: '1-2 months' },
-            { step: 4, title: 'Trial Proceedings', description: 'Present evidence, examine witnesses, and argue case before judge', duration: '1-2 years' },
-            { step: 5, title: 'Judgment & Appeal', description: 'Receive judgment and file appeal if necessary in higher court', duration: '6-12 months' }
-          ] : query.toLowerCase().includes('property') ? [
-            { step: 1, title: 'Title Verification', description: 'Verify property title and ownership documents with legal expert', duration: '1-2 weeks' },
-            { step: 2, title: 'Legal Notice', description: 'Send legal notice to opposing party asserting your rights', duration: '1 week' },
-            { step: 3, title: 'File Suit', description: 'File suit for declaration, possession, or injunction in civil court', duration: '2-3 months' },
-            { step: 4, title: 'Interim Relief', description: 'Apply for temporary injunction to maintain status quo', duration: '1-2 months' },
-            { step: 5, title: 'Final Decree', description: 'Obtain final decree and execute through court process', duration: '2-3 years' }
-          ] : [
+          jurisdictionProcedure: [
             { step: 1, title: 'Legal Consultation', description: 'Consult with lawyer to understand your legal position and options', duration: '1 week' },
             { step: 2, title: 'Gather Evidence', description: 'Collect all relevant documents and evidence supporting your case', duration: '2-3 weeks' },
-            { step: 3, title: 'File Complaint/Suit', description: 'File appropriate legal action in relevant court or tribunal', duration: '1-2 months' },
-            { step: 4, title: 'Court Proceedings', description: 'Attend hearings and present your case before the court', duration: '6-18 months' },
-            { step: 5, title: 'Judgment', description: 'Receive court judgment and pursue enforcement if favorable', duration: '3-6 months' }
+            { step: 3, title: 'File Complaint/Suit', description: 'File appropriate legal action in relevant court or tribunal', duration: '1-2 months' }
           ],
           recommendations: [
             'Review the limitation period for your type of case',
             'Preserve all evidence in its original form',
-            'Avoid direct confrontation with the other party without legal counsel'
+            'Consult with a licensed attorney for specific legal advice'
           ]
         })
-        setIsSubmitting(false)
-      }, 2000)
+      } else {
+        alert(`Error: ${result.error || 'Failed to get response from backend'}`)
+      }
     } catch (error) {
       console.error('Error:', error)
+      alert(`Error: ${error.message || 'Failed to connect to backend'}`)
+    } finally {
       setIsSubmitting(false)
     }
   }

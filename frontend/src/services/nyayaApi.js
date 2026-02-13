@@ -2,8 +2,9 @@
 // Connects frontend to the existing Nyaya AI backend
 
 import axios from 'axios'
+import { BASE_URL } from '../lib/apiConfig'
 
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = BASE_URL
 
 // Configure axios instance
 const apiClient = axios.create({
