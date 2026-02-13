@@ -546,9 +546,7 @@ function App() {
           margin: '0 auto',
           lineHeight: '1.6'
         }}>
-          Based on what you've described, I can help you understand your legal position
-          and guide you through the applicable laws and procedures. Our AI-powered consultation
-          provides comprehensive legal analysis across multiple jurisdictions.
+          Understand your legal position and get guidance on relevant laws and procedures with our AI-powered multi-jurisdictional consultation.
         </p>
       </header>
 
