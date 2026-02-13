@@ -39,49 +39,96 @@ const LegalQueryCard = () => {
 
   return (
     <div className="consultation-card">
-      {/* Advisory-Style Heading */}
-      <h2 style={{
-        fontSize: '1.5rem',
-        color: '#2c3e50',
-        marginBottom: '20px',
-        fontWeight: '400'
+      {/* Eye-catching header with icon */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '15px',
+        marginBottom: '25px'
       }}>
-        Let's Discuss Your Legal Matter
-      </h2>
-
-      {/* Consultation-Grade Section Label */}
-      <div className="consultation-section">
-        <div className="section-label">Please Describe Your Situation</div>
-        <p style={{
-          fontSize: '14px',
-          color: '#6c757d',
-          marginBottom: '15px',
-          fontStyle: 'italic'
+        <div style={{
+          width: '50px',
+          height: '50px',
+          borderRadius: '12px',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '24px'
         }}>
-          To provide you with the most accurate guidance, please share as many relevant details as possible about your circumstances.
-        </p>
+          💬
+        </div>
+        <div>
+          <h2 style={{
+            fontSize: '1.8rem',
+            color: '#2c3e50',
+            margin: 0,
+            fontWeight: '700'
+          }}>
+            Get Legal Guidance
+          </h2>
+          <p style={{
+            fontSize: '14px',
+            color: '#6b7280',
+            margin: 0
+          }}>
+            AI-powered analysis in seconds
+          </p>
+        </div>
       </div>
 
-      {/* Input with Conversational Placeholder */}
+      {/* Benefits section */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+        gap: '15px',
+        marginBottom: '25px'
+      }}>
+        {[
+          { icon: '⚡', text: 'Instant Response' },
+          { icon: '🌍', text: 'Multi-Jurisdiction' },
+          { icon: '🔒', text: 'Confidential' }
+        ].map((benefit, i) => (
+          <div key={i} style={{
+            padding: '12px',
+            background: 'rgba(102, 126, 234, 0.05)',
+            borderRadius: '8px',
+            textAlign: 'center',
+            border: '1px solid rgba(102, 126, 234, 0.1)'
+          }}>
+            <div style={{ fontSize: '20px', marginBottom: '5px' }}>{benefit.icon}</div>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: '#667eea' }}>{benefit.text}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Input section */}
       <form onSubmit={handleSubmit}>
-        <textarea
-          className="consultation-input"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="I've encountered a legal issue and need to understand my rights and potential options. Based on what you've described, could you explain how the law applies to my situation and what steps I should consider?"
-          style={{
-            minHeight: '120px',
-            fontSize: '16px'
-          }}
-        />
+        <div className="consultation-section">
+          <div className="section-label">Describe Your Legal Situation</div>
+          <textarea
+            className="consultation-input"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Example: I signed a contract for services, but the other party hasn't delivered. What are my options?"
+            style={{
+              minHeight: '140px',
+              fontSize: '16px'
+            }}
+          />
+        </div>
         
         <button
           type="submit"
           className="consultation-btn"
           disabled={isSubmitting || !query.trim()}
-          style={{ width: '100%' }}
+          style={{ 
+            width: '100%',
+            fontSize: '16px',
+            padding: '16px'
+          }}
         >
-          {isSubmitting ? 'Reviewing Your Case...' : 'Provide Legal Analysis'}
+          {isSubmitting ? '🔍 Analyzing Your Case...' : '✨ Get Legal Analysis'}
         </button>
       </form>
 
