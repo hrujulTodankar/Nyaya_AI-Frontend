@@ -473,7 +473,7 @@ function App() {
   }
 
   return (
-    <div className="container">
+    <div className="container" style={{ paddingTop: '100px' }}>
       {/* Enhanced Header with Glassmorphism Effect */}
       <header style={{
         textAlign: 'center',
@@ -553,58 +553,100 @@ function App() {
         </p>
       </header>
 
-      {/* Enhanced Navigation with Modern Design */}
+      {/* Floating Pill-Shaped Glassmorphism Navbar */}
       <nav style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '15px',
-        marginBottom: '40px',
-        maxWidth: '1200px',
-        margin: '0 auto 40px'
+        position: 'fixed',
+        top: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '20px',
+        padding: '12px 24px',
+        background: 'rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderRadius: '9999px',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)'
       }}>
-        {[
-          { id: 'query', label: 'Ask Your Legal Question', description: 'Get personalized legal guidance' },
-          { id: 'multi', label: 'Compare Across Jurisdictions', description: 'Analyze laws across regions' },
-          { id: 'consultation', label: 'Schedule Consultation', description: 'Book a detailed legal review' },
-          { id: 'case', label: 'Case Presentation', description: 'View detailed case analysis' },
-          { id: 'test', label: 'Demo Mode', description: 'View sample components' }
-        ].map((option) => (
-          <GlareHover
-            key={option.id}
-            glareColor="#ffffff"
-            glareOpacity={0.2}
-            glareAngle={-30}
-            glareSize={200}
-            transitionDuration={600}
-            borderRadius="12px"
-          >
+        {/* Logo and Brand */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          paddingRight: '20px',
+          borderRight: '1px solid rgba(255, 255, 255, 0.2)'
+        }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '16px'
+          }}>
+            ⚖️
+          </div>
+          <span style={{
+            fontSize: '16px',
+            fontWeight: '700',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
+            Nyaya AI
+          </span>
+        </div>
+
+        {/* Nav Links */}
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {[
+            { id: 'query', label: 'Ask Question' },
+            { id: 'multi', label: 'Compare' },
+            { id: 'consultation', label: 'Consult' },
+            { id: 'case', label: 'Case' },
+            { id: 'test', label: 'Demo' }
+          ].map((option) => (
             <button
+              key={option.id}
               onClick={() => setActiveCard(option.id)}
               style={{
-                width: '100%',
-                height: '100%',
-                padding: '16px',
-                border: activeCard === option.id ? '2px solid rgba(96, 165, 250, 0.8)' : '2px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: '12px',
-                background: activeCard === option.id ? 'rgba(96, 165, 250, 0.1)' : 'rgba(255, 255, 255, 0.1)',
-                color: activeCard === option.id ? '#3b82f6' : '#9ca3af',
+                padding: '8px 20px',
+                border: 'none',
+                borderRadius: '9999px',
+                background: activeCard === option.id ? 'rgba(96, 165, 250, 0.2)' : 'transparent',
+                color: activeCard === option.id ? '#60a5fa' : 'rgba(255, 255, 255, 0.7)',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s ease',
                 fontSize: '14px',
                 fontWeight: '600',
-                backdropFilter: 'blur(10px)',
-                minHeight: '80px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                textAlign: 'center'
+                whiteSpace: 'nowrap',
+                boxShadow: activeCard === option.id ? '0 0 20px rgba(96, 165, 250, 0.4), 0 0 40px rgba(96, 165, 250, 0.2)' : 'none'
+              }}
+              onMouseEnter={(e) => {
+                if (activeCard !== option.id) {
+                  e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.target.style.color = '#ffffff';
+                  e.target.style.boxShadow = '0 0 15px rgba(96, 165, 250, 0.3)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeCard !== option.id) {
+                  e.target.style.background = 'transparent';
+                  e.target.style.color = 'rgba(255, 255, 255, 0.7)';
+                  e.target.style.boxShadow = 'none';
+                }
               }}
             >
-              <div style={{ fontWeight: '700', marginBottom: '4px' }}>{option.label}</div>
-              <div style={{ fontSize: '12px', opacity: 0.8 }}>{option.description}</div>
+              {option.label}
             </button>
-          </GlareHover>
-        ))}
+          ))}
+        </div>
       </nav>
 
       {/* Active Consultation Card */}
