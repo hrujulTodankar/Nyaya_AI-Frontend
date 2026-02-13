@@ -28,20 +28,7 @@ const LegalQueryCard = () => {
         const backendData = result.data
         console.log('Backend Response:', backendData)
         
-        setResponse({
-          // Core backend data
-          confidence: backendData.confidence || 0,
-          jurisdiction: backendData.jurisdiction || 'Unknown',
-          domain: backendData.domain || 'General',
-          
-          // Legal assessment from backend
-          legalRoute: backendData.legal_route || [],
-          constitutionalArticles: backendData.constitutional_articles || [],
-          reasoningTrace: backendData.reasoning_trace || {},
-          
-          // Full backend response for display
-          fullResponse: backendData
-        })
+        setResponse(backendData)
       } else {
         alert(`Error: ${result.error || 'Failed to get response from backend'}`)
       }
@@ -118,10 +105,10 @@ const LegalQueryCard = () => {
             borderBottom: '2px solid rgba(59, 130, 246, 0.5)',
             paddingBottom: '12px'
           }}>
-            🏛️ Legal Assessment from Backend
+            🏛️ Legal Assessment
           </h3>
 
-          {/* Jurisdiction & Domain */}
+          {/* Key Metrics */}
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -135,7 +122,9 @@ const LegalQueryCard = () => {
               borderRadius: '12px'
             }}>
               <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '12px', marginBottom: '4px' }}>Jurisdiction</div>
-              <div style={{ color: '#fff', fontSize: '18px', fontWeight: '600' }}>{response.jurisdiction}</div>
+              <div style={{ color: '#fff', fontSize: '18px', fontWeight: '600' }}>
+                {response.jurisdiction_detected || response.jurisdiction}
+              </div>
             </div>
             <div style={{
               padding: '16px',
@@ -144,7 +133,9 @@ const LegalQueryCard = () => {
               borderRadius: '12px'
             }}>
               <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '12px', marginBottom: '4px' }}>Domain</div>
-              <div style={{ color: '#fff', fontSize: '18px', fontWeight: '600' }}>{response.domain}</div>
+              <div style={{ color: '#fff', fontSize: '18px', fontWeight: '600', textTransform: 'capitalize' }}>
+                {response.domain}
+              </div>
             </div>
             <div style={{
               padding: '16px',
@@ -152,78 +143,25 @@ const LegalQueryCard = () => {
               border: '1px solid rgba(16, 185, 129, 0.3)',
               borderRadius: '12px'
             }}>
-              <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '12px', marginBottom: '4px' }}>Confidence</div>
-              <div style={{ color: '#fff', fontSize: '18px', fontWeight: '600' }}>{Math.round(response.confidence * 100)}%</div>
+              <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '12px', marginBottom: '4px' }}>Overall Confidence</div>
+              <div style={{ color: '#fff', fontSize: '18px', fontWeight: '600' }}>
+                {Math.round((response.confidence?.overall || 0) * 100)}%
+              </div>
             </div>
           </div>
 
-          {/* Legal Route */}
-          {response.legalRoute && response.legalRoute.length > 0 && (
+          {/* Legal Analysis */}
+          {response.reasoning_trace?.legal_analysis && (
             <div style={{ marginBottom: '24px' }}>
               <h4 style={{ 
                 color: '#fff', 
                 fontSize: '18px', 
-                marginBottom: '12px'
+                marginBottom: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}>
-                📋 Legal Route
-              </h4>
-              <div style={{
-                padding: '16px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '8px'
-              }}>
-                {response.legalRoute.map((agent, idx) => (
-                  <div key={idx} style={{
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    fontSize: '14px',
-                    padding: '8px 0',
-                    borderBottom: idx < response.legalRoute.length - 1 ? '1px solid rgba(255, 255, 255, 0.1)' : 'none'
-                  }}>
-                    {idx + 1}. {agent}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Constitutional Articles */}
-          {response.constitutionalArticles && response.constitutionalArticles.length > 0 && (
-            <div style={{ marginBottom: '24px' }}>
-              <h4 style={{ 
-                color: '#fff', 
-                fontSize: '18px', 
-                marginBottom: '12px'
-              }}>
-                ⚖️ Constitutional Articles
-              </h4>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {response.constitutionalArticles.map((article, idx) => (
-                  <span key={idx} style={{
-                    padding: '8px 16px',
-                    background: 'rgba(245, 158, 11, 0.2)',
-                    border: '1px solid rgba(245, 158, 11, 0.4)',
-                    borderRadius: '20px',
-                    color: '#f59e0b',
-                    fontSize: '13px',
-                    fontWeight: '600'
-                  }}>
-                    {article}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Reasoning Trace */}
-          {response.reasoningTrace && Object.keys(response.reasoningTrace).length > 0 && (
-            <div style={{ marginBottom: '24px' }}>
-              <h4 style={{ 
-                color: '#fff', 
-                fontSize: '18px', 
-                marginBottom: '12px'
-              }}>
-                🧠 Reasoning Trace
+                📋 Legal Analysis
               </h4>
               <div style={{
                 padding: '20px',
@@ -232,50 +170,190 @@ const LegalQueryCard = () => {
                 borderRadius: '8px'
               }}>
                 <pre style={{
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  fontSize: '13px',
-                  lineHeight: '1.6',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  fontSize: '14px',
+                  lineHeight: '1.8',
                   margin: 0,
                   whiteSpace: 'pre-wrap',
                   wordWrap: 'break-word',
-                  fontFamily: 'monospace'
+                  fontFamily: 'inherit'
                 }}>
-                  {JSON.stringify(response.reasoningTrace, null, 2)}
+                  {response.reasoning_trace.legal_analysis}
                 </pre>
               </div>
             </div>
           )}
 
-          {/* Full Backend Response */}
-          <div style={{ marginBottom: '24px' }}>
-            <h4 style={{ 
-              color: '#fff', 
-              fontSize: '18px', 
-              marginBottom: '12px'
-            }}>
-              📊 Complete Backend Response
-            </h4>
-            <div style={{
-              padding: '20px',
-              background: 'rgba(0, 0, 0, 0.3)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '8px',
-              maxHeight: '400px',
-              overflowY: 'auto'
-            }}>
-              <pre style={{
-                color: '#10b981',
-                fontSize: '12px',
-                lineHeight: '1.5',
-                margin: 0,
-                whiteSpace: 'pre-wrap',
-                wordWrap: 'break-word',
-                fontFamily: 'monospace'
+          {/* Statutes */}
+          {response.statutes && response.statutes.length > 0 && (
+            <div style={{ marginBottom: '24px' }}>
+              <h4 style={{ 
+                color: '#fff', 
+                fontSize: '18px', 
+                marginBottom: '12px'
               }}>
-                {JSON.stringify(response.fullResponse, null, 2)}
-              </pre>
+                ⚖️ Applicable Statutes ({response.statutes.length})
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {response.statutes.map((statute, idx) => (
+                  <div key={idx} style={{
+                    padding: '16px',
+                    background: 'rgba(245, 158, 11, 0.1)',
+                    border: '1px solid rgba(245, 158, 11, 0.3)',
+                    borderRadius: '8px'
+                  }}>
+                    <div style={{ color: '#f59e0b', fontSize: '13px', fontWeight: '600', marginBottom: '8px' }}>
+                      Section {statute.section} - {statute.act} {statute.year > 0 ? `(${statute.year})` : ''}
+                    </div>
+                    <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px', lineHeight: '1.6' }}>
+                      {statute.title}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Remedies */}
+          {response.reasoning_trace?.remedies && response.reasoning_trace.remedies.length > 0 && (
+            <div style={{ marginBottom: '24px' }}>
+              <h4 style={{ 
+                color: '#fff', 
+                fontSize: '18px', 
+                marginBottom: '12px'
+              }}>
+                💊 Available Remedies
+              </h4>
+              <ul style={{ 
+                margin: 0, 
+                paddingLeft: '20px', 
+                color: 'rgba(255, 255, 255, 0.8)',
+                fontSize: '14px',
+                lineHeight: '2'
+              }}>
+                {response.reasoning_trace.remedies.map((remedy, idx) => (
+                  <li key={idx}>{remedy}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Procedural Steps */}
+          {response.reasoning_trace?.procedural_steps && response.reasoning_trace.procedural_steps.length > 0 && (
+            <div style={{ marginBottom: '24px' }}>
+              <h4 style={{ 
+                color: '#fff', 
+                fontSize: '18px', 
+                marginBottom: '12px'
+              }}>
+                📝 Procedural Steps
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {response.reasoning_trace.procedural_steps.map((step, idx) => (
+                  <div key={idx} style={{
+                    padding: '16px',
+                    background: 'rgba(59, 130, 246, 0.1)',
+                    border: '1px solid rgba(59, 130, 246, 0.3)',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px'
+                  }}>
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: '#3b82f6',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      fontWeight: '700',
+                      color: '#fff',
+                      flexShrink: 0
+                    }}>
+                      {idx + 1}
+                    </div>
+                    <div style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '14px', textTransform: 'capitalize' }}>
+                      {step}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Legal Route */}
+          {response.legal_route && response.legal_route.length > 0 && (
+            <div style={{ marginBottom: '24px' }}>
+              <h4 style={{ 
+                color: '#fff', 
+                fontSize: '18px', 
+                marginBottom: '12px'
+              }}>
+                🔄 Processing Route
+              </h4>
+              <div style={{
+                padding: '16px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px',
+                alignItems: 'center'
+              }}>
+                {response.legal_route.map((agent, idx) => (
+                  <React.Fragment key={idx}>
+                    <span style={{
+                      padding: '6px 12px',
+                      background: 'rgba(139, 92, 246, 0.2)',
+                      border: '1px solid rgba(139, 92, 246, 0.4)',
+                      borderRadius: '6px',
+                      color: '#a78bfa',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      {agent.replace(/_/g, ' ')}
+                    </span>
+                    {idx < response.legal_route.length - 1 && (
+                      <span style={{ color: 'rgba(255, 255, 255, 0.4)' }}>→</span>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Confidence Breakdown */}
+          {response.confidence && (
+            <div style={{ marginBottom: '24px' }}>
+              <h4 style={{ 
+                color: '#fff', 
+                fontSize: '18px', 
+                marginBottom: '12px'
+              }}>
+                📊 Confidence Breakdown
+              </h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
+                {Object.entries(response.confidence).map(([key, value]) => (
+                  <div key={key} style={{
+                    padding: '12px',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '8px'
+                  }}>
+                    <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '11px', marginBottom: '4px', textTransform: 'capitalize' }}>
+                      {key.replace(/_/g, ' ')}
+                    </div>
+                    <div style={{ color: '#fff', fontSize: '16px', fontWeight: '600' }}>
+                      {Math.round(value * 100)}%
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Trace ID */}
           <div style={{
