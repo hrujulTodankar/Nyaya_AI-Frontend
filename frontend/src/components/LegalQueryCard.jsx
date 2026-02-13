@@ -79,8 +79,7 @@ const LegalQueryCard = () => {
 
       {/* Benefits section */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+        display: 'flex',
         gap: '15px',
         marginBottom: '25px'
       }}>
