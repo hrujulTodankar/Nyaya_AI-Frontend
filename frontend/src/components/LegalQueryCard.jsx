@@ -4,9 +4,16 @@ import { legalQueryService } from '../services/nyayaApi.js'
 
 const LegalQueryCard = () => {
   const [query, setQuery] = useState('')
+  const [selectedJurisdiction, setSelectedJurisdiction] = useState('India')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [response, setResponse] = useState(null)
   const [traceId, setTraceId] = useState(null)
+
+  const jurisdictionMap = {
+    'India': 'India',
+    'UK': 'UK',
+    'UAE': 'UAE'
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -18,7 +25,7 @@ const LegalQueryCard = () => {
     try {
       const result = await legalQueryService.submitQuery({
         query: query,
-        jurisdiction_hint: 'India'
+        jurisdiction_hint: jurisdictionMap[selectedJurisdiction]
       })
 
       if (result.success) {
@@ -51,6 +58,33 @@ const LegalQueryCard = () => {
         padding: '32px'
       }}>
         <h2 style={{ color: '#fff', fontSize: '24px', marginBottom: '24px' }}>Ask Legal Question</h2>
+        
+        {/* Jurisdiction Selector */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px', marginBottom: '8px', display: 'block' }}>Select Jurisdiction</label>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            {['India', 'UK', 'UAE'].map(jurisdiction => (
+              <button
+                key={jurisdiction}
+                type="button"
+                onClick={() => setSelectedJurisdiction(jurisdiction)}
+                style={{
+                  padding: '10px 20px',
+                  border: selectedJurisdiction === jurisdiction ? '2px solid #3b82f6' : '2px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '8px',
+                  background: selectedJurisdiction === jurisdiction ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255, 255, 255, 0.05)',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600'
+                }}
+              >
+                {jurisdiction}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <textarea
             value={query}

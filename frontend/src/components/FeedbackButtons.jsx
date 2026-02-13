@@ -187,7 +187,7 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
       </div>
 
       {/* Did this match your situation? */}
-      <div>
+      <div style={{ marginBottom: '15px' }}>
         <div style={{
           fontSize: '13px',
           color: 'rgba(255, 255, 255, 0.7)',
@@ -198,7 +198,7 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <button
-            onClick={() => handleFeedback('matches_situation', true)}
+            onClick={() => handleFeedback('matchesSituation', true)}
             disabled={submitting}
             style={{
               padding: '6px 12px',
@@ -213,7 +213,7 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
             Yes
           </button>
           <button
-            onClick={() => handleFeedback('matches_situation', false)}
+            onClick={() => handleFeedback('matchesSituation', false)}
             disabled={submitting}
             style={{
               padding: '6px 12px',
@@ -229,6 +229,30 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
           </button>
         </div>
       </div>
+
+      {/* Submit Feedback Button */}
+      <button
+        onClick={() => {
+          if (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) {
+            alert('Feedback submitted successfully!')
+          }
+        }}
+        disabled={submitting || (feedback.helpful === null && feedback.clear === null && feedback.matchesSituation === null)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          marginTop: '15px',
+          border: 'none',
+          borderRadius: '8px',
+          background: (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) ? '#3b82f6' : 'rgba(255, 255, 255, 0.1)',
+          color: '#fff',
+          cursor: (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) ? 'pointer' : 'not-allowed',
+          fontSize: '14px',
+          fontWeight: '600'
+        }}
+      >
+        {submitting ? 'Submitting...' : 'Submit Feedback'}
+      </button>
 
       {/* Error display */}
       {error && (
