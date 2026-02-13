@@ -1,7 +1,22 @@
 import React, { useState } from 'react'
+import { procedureService } from '../services/nyayaApi.js'
 
 const Documentation = ({ onBack }) => {
   const [activeSection, setActiveSection] = useState('overview')
+  const [testResults, setTestResults] = useState({})
+  const [testing, setTesting] = useState(false)
+
+  const testEndpoint = async (name, testFn) => {
+    setTesting(true)
+    setTestResults(prev => ({ ...prev, [name]: 'Testing...' }))
+    try {
+      const result = await testFn()
+      setTestResults(prev => ({ ...prev, [name]: result.success ? '✅ Success' : `❌ ${result.error}` }))
+    } catch (error) {
+      setTestResults(prev => ({ ...prev, [name]: `❌ ${error.message}` }))
+    }
+    setTesting(false)
+  }
 
   const sections = {
     overview: {
@@ -48,6 +63,12 @@ const Documentation = ({ onBack }) => {
         { heading: 'How accurate is the AI?', text: 'The AI provides confidence scores with each analysis. Higher confidence (>80%) indicates stronger analysis, but always verify with legal professionals.' },
         { heading: 'Can I save my queries?', text: 'Each query generates a trace ID for tracking. You can reference this ID for follow-up questions or to retrieve analysis history.' },
         { heading: 'What case types are covered?', text: 'Contract disputes, property disputes, criminal matters, civil litigation, family law, employment law, and more across all supported jurisdictions.' }
+      ]
+    },
+    api: {
+      title: 'Test API Endpoints',
+      content: [
+        { heading: 'Procedure Endpoints', text: 'Test all backend procedure endpoints to verify connectivity and functionality.' }
       ]
     }
   }
@@ -130,6 +151,30 @@ const Documentation = ({ onBack }) => {
               </div>
             ))}
           </div>
+
+          {/* API Testing Section */}
+          {activeSection === 'api' && (
+            <div style={{ marginTop: '24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '12px' }}>
+              <button onClick={() => testEndpoint('list', () => procedureService.listProcedures())} disabled={testing} style={{ padding: '12px', background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '13px' }}>
+                Test List Procedures {testResults.list}
+              </button>
+              <button onClick={() => testEndpoint('schemas', () => procedureService.getSchemas())} disabled={testing} style={{ padding: '12px', background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '13px' }}>
+                Test Get Schemas {testResults.schemas}
+              </button>
+              <button onClick={() => testEndpoint('summary', () => procedureService.getProcedureSummary('IN', 'civil'))} disabled={testing} style={{ padding: '12px', background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '13px' }}>
+                Test Procedure Summary {testResults.summary}
+              </button>
+              <button onClick={() => testEndpoint('enhanced', () => procedureService.getEnhancedAnalysis('IN', 'civil'))} disabled={testing} style={{ padding: '12px', background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '13px' }}>
+                Test Enhanced Analysis {testResults.enhanced}
+              </button>
+              <button onClick={() => testEndpoint('domain', () => procedureService.getDomainClassification('IN'))} disabled={testing} style={{ padding: '12px', background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '13px' }}>
+                Test Domain Classification {testResults.domain}
+              </button>
+              <button onClick={() => testEndpoint('sections', () => procedureService.getLegalSections('IN', 'civil'))} disabled={testing} style={{ padding: '12px', background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontSize: '13px' }}>
+                Test Legal Sections {testResults.sections}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Quick Links */}
