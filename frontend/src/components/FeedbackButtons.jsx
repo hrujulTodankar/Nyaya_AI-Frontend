@@ -29,54 +29,40 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
   const submitFeedback = async (type, value) => {
     // Validate traceId before sending signal
     if (!isValidTraceId(traceId)) {
-      console.log('Skipping feedback submission - no valid trace ID (demo mode)')
-      return // Silently skip in demo mode
-    }
-
-    // Skip if trace ID is a mock ID
-    if (traceId.startsWith('mock_')) {
-      console.log('Skipping feedback submission - mock trace ID (demo mode)')
-      return // Silently skip for mock IDs
-    }
-
-    // Validate feedback value
-    if (!isValidFeedbackValue(value)) {
-      setError('Invalid feedback value')
-      console.warn('Attempted to submit feedback with invalid value:', value)
+      console.log('Skipping feedback submission - no valid trace ID')
       return
     }
 
-    // Validate feedback type
-    if (!isValidFeedbackType(type)) {
-      setError('Invalid feedback type')
-      console.warn('Attempted to submit feedback with invalid type:', type)
+    if (traceId.startsWith('mock_')) {
+      console.log('Skipping feedback submission - mock trace ID')
+      return
+    }
+
+    if (!isValidFeedbackValue(value)) {
+      setError('Invalid feedback value')
       return
     }
 
     setError(null)
     setSubmitting(true)
     try {
-      // Map boolean feedback to 1-5 rating scale
-      // true → 5 (positive), false → 1 (negative)
       const rating = value ? 5 : 1
       
       const feedbackData = {
         trace_id: traceId,
         rating: rating,
-        feedback_type: type,
-        comment: `${context} - ${type}: ${value ? 'positive' : 'negative'}`
+        feedback_type: 'correctness',
+        comment: `${type}: ${value ? 'positive' : 'negative'}`
       }
 
       const result = await legalQueryService.submitFeedback(feedbackData)
       
       if (result.success) {
-        console.log(`Feedback submitted successfully: ${type} = ${value}`)
+        console.log(`Feedback submitted: ${type} = ${value}`)
       } else {
-        setError(result.error || 'Failed to submit feedback')
-        console.error('Feedback submission error:', result.error)
+        console.error('Feedback error:', result.error)
       }
     } catch (error) {
-      setError('Failed to submit feedback')
       console.error('Failed to submit feedback:', error)
     } finally {
       setSubmitting(false)
