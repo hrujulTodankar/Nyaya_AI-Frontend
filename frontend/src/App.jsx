@@ -557,12 +557,13 @@ function App() {
       <nav style={{
         position: 'fixed',
         top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
+        left: '20px',
+        right: '20px',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
-        gap: '20px',
+        justifyContent: 'flex-start',
+        gap: '10px',
         padding: '12px 24px',
         background: 'rgba(255, 255, 255, 0.1)',
         backdropFilter: 'blur(12px)',
@@ -571,82 +572,28 @@ function App() {
         border: '1px solid rgba(255, 255, 255, 0.1)',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)'
       }}>
-        {/* Logo and Brand */}
         <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           display: 'flex',
           alignItems: 'center',
-          gap: '10px',
-          paddingRight: '20px',
-          borderRight: '1px solid rgba(255, 255, 255, 0.2)'
+          justifyContent: 'center',
+          fontSize: '16px'
         }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '16px'
-          }}>
-            ⚖️
-          </div>
-          <span style={{
-            fontSize: '16px',
-            fontWeight: '700',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
-            Nyaya AI
-          </span>
+          ⚖️
         </div>
-
-        {/* Nav Links */}
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {[
-            { id: 'query', label: 'Ask Question' },
-            { id: 'multi', label: 'Compare' },
-            { id: 'consultation', label: 'Consult' },
-            { id: 'case', label: 'Case' },
-            { id: 'test', label: 'Demo' }
-          ].map((option) => (
-            <button
-              key={option.id}
-              onClick={() => setActiveCard(option.id)}
-              style={{
-                padding: '8px 20px',
-                border: 'none',
-                borderRadius: '9999px',
-                background: activeCard === option.id ? 'rgba(96, 165, 250, 0.2)' : 'transparent',
-                color: activeCard === option.id ? '#60a5fa' : 'rgba(255, 255, 255, 0.7)',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                fontSize: '14px',
-                fontWeight: '600',
-                whiteSpace: 'nowrap',
-                boxShadow: activeCard === option.id ? '0 0 20px rgba(96, 165, 250, 0.4), 0 0 40px rgba(96, 165, 250, 0.2)' : 'none'
-              }}
-              onMouseEnter={(e) => {
-                if (activeCard !== option.id) {
-                  e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-                  e.target.style.color = '#ffffff';
-                  e.target.style.boxShadow = '0 0 15px rgba(96, 165, 250, 0.3)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (activeCard !== option.id) {
-                  e.target.style.background = 'transparent';
-                  e.target.style.color = 'rgba(255, 255, 255, 0.7)';
-                  e.target.style.boxShadow = 'none';
-                }
-              }}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+        <span style={{
+          fontSize: '16px',
+          fontWeight: '700',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text'
+        }}>
+          Nyaya AI
+        </span>
       </nav>
 
       {/* Active Consultation Card */}
