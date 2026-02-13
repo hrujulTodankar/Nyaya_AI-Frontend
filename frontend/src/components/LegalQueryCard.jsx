@@ -80,6 +80,7 @@ const LegalQueryCard = () => {
       {/* Benefits section */}
       <div style={{
         display: 'flex',
+        justifyContent: 'space-between',
         gap: '15px',
         marginBottom: '25px'
       }}>
