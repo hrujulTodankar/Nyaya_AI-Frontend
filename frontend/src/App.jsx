@@ -9,6 +9,7 @@ import GlossaryCard from './components/GlossaryCard.jsx'
 import JurisdictionInfoBar from './components/JurisdictionInfoBar.jsx'
 import EnforcementStatusCard from './components/EnforcementStatusCard.jsx'
 import SkeletonLoader from './components/SkeletonLoader.jsx'
+import GlareHover from './components/GlareHover.jsx'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -566,30 +567,41 @@ function App() {
           { id: 'case', label: 'Case Presentation', description: 'View detailed case analysis' },
           { id: 'test', label: 'Demo Mode', description: 'View sample components' }
         ].map((option) => (
-          <button
+          <GlareHover
             key={option.id}
-            onClick={() => setActiveCard(option.id)}
-            style={{
-              padding: '16px',
-              border: activeCard === option.id ? '2px solid rgba(96, 165, 250, 0.8)' : '2px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '12px',
-              background: activeCard === option.id ? 'rgba(96, 165, 250, 0.1)' : 'rgba(255, 255, 255, 0.1)',
-              color: activeCard === option.id ? '#3b82f6' : '#9ca3af',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              fontSize: '14px',
-              fontWeight: '600',
-              backdropFilter: 'blur(10px)',
-              minHeight: '80px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              textAlign: 'center'
-            }}
+            glareColor="#ffffff"
+            glareOpacity={0.2}
+            glareAngle={-30}
+            glareSize={200}
+            transitionDuration={600}
+            borderRadius="12px"
           >
-            <div style={{ fontWeight: '700', marginBottom: '4px' }}>{option.label}</div>
-            <div style={{ fontSize: '12px', opacity: 0.8 }}>{option.description}</div>
-          </button>
+            <button
+              onClick={() => setActiveCard(option.id)}
+              style={{
+                width: '100%',
+                height: '100%',
+                padding: '16px',
+                border: activeCard === option.id ? '2px solid rgba(96, 165, 250, 0.8)' : '2px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '12px',
+                background: activeCard === option.id ? 'rgba(96, 165, 250, 0.1)' : 'rgba(255, 255, 255, 0.1)',
+                color: activeCard === option.id ? '#3b82f6' : '#9ca3af',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                fontSize: '14px',
+                fontWeight: '600',
+                backdropFilter: 'blur(10px)',
+                minHeight: '80px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                textAlign: 'center'
+              }}
+            >
+              <div style={{ fontWeight: '700', marginBottom: '4px' }}>{option.label}</div>
+              <div style={{ fontSize: '12px', opacity: 0.8 }}>{option.description}</div>
+            </button>
+          </GlareHover>
         ))}
       </nav>
 
