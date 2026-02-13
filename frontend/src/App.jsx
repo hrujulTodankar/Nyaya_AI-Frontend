@@ -552,42 +552,39 @@ function App() {
 
       {/* Enhanced Navigation with Modern Design */}
       <nav style={{
-        display: 'flex',
-        justifyContent: 'center',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
         gap: '15px',
         marginBottom: '40px',
-        flexWrap: 'wrap'
+        maxWidth: '1200px',
+        margin: '0 auto 40px'
       }}>
         {[
           { id: 'query', label: 'Ask Your Legal Question', description: 'Get personalized legal guidance' },
           { id: 'multi', label: 'Compare Across Jurisdictions', description: 'Analyze laws across regions' },
           { id: 'consultation', label: 'Schedule Consultation', description: 'Book a detailed legal review' },
-          { id: 'case', label: 'Case Presentation', description: 'View detailed case analysis with jurisdiction switching' },
-          { id: 'test', label: 'Demo Mode', description: 'View sample case presentation components' }
+          { id: 'case', label: 'Case Presentation', description: 'View detailed case analysis' },
+          { id: 'test', label: 'Demo Mode', description: 'View sample components' }
         ].map((option) => (
           <button
             key={option.id}
             onClick={() => setActiveCard(option.id)}
             style={{
-              padding: '14px 24px',
+              padding: '16px',
               border: activeCard === option.id ? '2px solid rgba(96, 165, 250, 0.8)' : '2px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '12px',
               background: activeCard === option.id ? 'rgba(96, 165, 250, 0.1)' : 'rgba(255, 255, 255, 0.1)',
               color: activeCard === option.id ? '#3b82f6' : '#9ca3af',
               cursor: 'pointer',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              transition: 'all 0.2s ease',
               fontSize: '14px',
               fontWeight: '600',
               backdropFilter: 'blur(10px)',
-              boxShadow: activeCard === option.id ? '0 4px 15px rgba(96, 165, 250, 0.3)' : 'none'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = 'translateY(-2px)';
-              e.target.style.boxShadow = '0 6px 20px rgba(96, 165, 250, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = activeCard === option.id ? '0 4px 15px rgba(96, 165, 250, 0.3)' : 'none';
+              minHeight: '80px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              textAlign: 'center'
             }}
           >
             <div style={{ fontWeight: '700', marginBottom: '4px' }}>{option.label}</div>
