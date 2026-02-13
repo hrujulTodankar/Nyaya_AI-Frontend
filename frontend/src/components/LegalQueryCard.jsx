@@ -33,7 +33,11 @@ const LegalQueryCard = () => {
         
         // Display actual backend response
         const backendData = result.data
+        console.log('=== FRONTEND DEBUG ===')
+        console.log('Requested Jurisdiction:', jurisdictionMap[selectedJurisdiction])
         console.log('Backend Response:', backendData)
+        console.log('Returned Jurisdiction:', backendData.jurisdiction_detected || backendData.jurisdiction)
+        console.log('======================')
         
         setResponse(backendData)
       } else {
@@ -141,6 +145,22 @@ const LegalQueryCard = () => {
           }}>
             🏛️ Legal Assessment
           </h3>
+
+          {/* Jurisdiction Request vs Response */}
+          <div style={{
+            padding: '16px',
+            background: 'rgba(245, 158, 11, 0.1)',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+            borderRadius: '8px',
+            marginBottom: '24px'
+          }}>
+            <div style={{ color: '#f59e0b', fontSize: '13px', fontWeight: '600', marginBottom: '8px' }}>
+              ⚠️ Jurisdiction Check
+            </div>
+            <div style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '14px' }}>
+              <strong>You selected:</strong> {selectedJurisdiction} | <strong>Backend returned:</strong> {response.jurisdiction_detected || response.jurisdiction}
+            </div>
+          </div>
 
           {/* Key Metrics */}
           <div style={{ 
