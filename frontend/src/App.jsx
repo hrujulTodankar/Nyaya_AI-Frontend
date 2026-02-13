@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import Galaxy from './components/Galaxy.jsx'
+import LegalOSDashboard from './components/LegalOSDashboard.jsx'
 import LegalQueryCard from './components/LegalQueryCard.jsx'
+import JurisdictionProcedure from './components/JurisdictionProcedure.jsx'
+import CaseTimelineGenerator from './components/CaseTimelineGenerator.jsx'
+import LegalGlossary from './components/LegalGlossary.jsx'
+import Documentation from './components/Documentation.jsx'
+import LegalConsultation from './components/LegalConsultation.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 import MultiJurisdictionCard from './components/MultiJurisdictionCard.jsx'
 import LegalConsultationCard from './components/LegalConsultationCard.jsx'
 import CaseSummaryCard from './components/CaseSummaryCard.jsx'
@@ -419,139 +427,163 @@ const CasePresentation = ({ traceId, jurisdiction, caseType, caseId, useDemoData
 }
 
 function App() {
-  const [activeCard, setActiveCard] = useState('query')
+  const [activeView, setActiveView] = useState('dashboard')
+  const [activeModule, setActiveModule] = useState(null)
   const [queryResult, setQueryResult] = useState(null)
   const [selectedJurisdiction, setSelectedJurisdiction] = useState('India')
 
-  // Handle query submission and extract trace ID
-  const handleQuerySubmit = async (queryData) => {
-    try {
-      const result = await casePresentationService.submitQuery(queryData)
-      if (result.success) {
-        setQueryResult(result)
-      }
-    } catch (error) {
-      console.error('Query submission error:', error)
-    }
+  const handleModuleSelect = (moduleId) => {
+    setActiveModule(moduleId)
+    setActiveView(moduleId)
   }
 
-  // Handle jurisdiction selection from query results
-  const handleJurisdictionSelect = (jurisdiction) => {
-    setSelectedJurisdiction(jurisdiction)
-    setActiveCard('case')
+  const handleBackToDashboard = () => {
+    setActiveView('dashboard')
+    setActiveModule(null)
   }
 
-  const renderActiveCard = () => {
-    switch (activeCard) {
-      case 'query':
-        return <LegalQueryCard onSubmit={handleQuerySubmit} onJurisdictionSelect={handleJurisdictionSelect} />
-      case 'multi':
-        return <MultiJurisdictionCard />
-      case 'consultation':
-        return <LegalConsultationCard />
-      case 'case':
+  const renderView = () => {
+    switch (activeView) {
+      case 'dashboard':
+        return <LegalOSDashboard onModuleSelect={handleModuleSelect} />
+      case 'consult':
         return (
-          <CasePresentation
-            traceId={queryResult?.trace_id || null}
-            jurisdiction={selectedJurisdiction}
-            caseType="General Legal Matter"
-            caseId="CASE-2024-001"
-          />
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <button
+              onClick={handleBackToDashboard}
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                color: '#fff',
+                cursor: 'pointer',
+                marginBottom: '20px',
+                fontSize: '14px'
+              }}
+            >
+              ← Back to Dashboard
+            </button>
+            <ErrorBoundary>
+              <LegalQueryCard />
+            </ErrorBoundary>
+          </div>
         )
-      case 'test':
+      case 'procedure':
         return (
-          <CasePresentation
-            traceId={null}
-            jurisdiction={selectedJurisdiction}
-            caseType="General Legal Matter"
-            caseId="CASE-2024-001"
-          />
+          <ErrorBoundary>
+            <JurisdictionProcedure onBack={handleBackToDashboard} />
+          </ErrorBoundary>
+        )
+      case 'timeline':
+        return (
+          <ErrorBoundary>
+            <CaseTimelineGenerator onBack={handleBackToDashboard} />
+          </ErrorBoundary>
+        )
+      case 'glossary':
+        return (
+          <ErrorBoundary>
+            <LegalGlossary onBack={handleBackToDashboard} />
+          </ErrorBoundary>
+        )
+      case 'docs':
+        return (
+          <ErrorBoundary>
+            <Documentation onBack={handleBackToDashboard} />
+          </ErrorBoundary>
+        )
+      case 'draft':
+        return (
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <button
+              onClick={handleBackToDashboard}
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                color: '#fff',
+                cursor: 'pointer',
+                marginBottom: '20px',
+                fontSize: '14px'
+              }}
+            >
+              ← Back to Dashboard
+            </button>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '16px',
+              padding: '40px',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '64px', marginBottom: '20px' }}>✍️</div>
+              <h2 style={{ color: '#fff', fontSize: '24px', marginBottom: '12px' }}>Generate Legal Draft</h2>
+              <p style={{ color: 'rgba(255, 255, 255, 0.6)', marginBottom: '24px' }}>AI document generation coming soon</p>
+            </div>
+          </div>
+        )
+      case 'compliance':
+        return (
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <button
+              onClick={handleBackToDashboard}
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                color: '#fff',
+                cursor: 'pointer',
+                marginBottom: '20px',
+                fontSize: '14px'
+              }}
+            >
+              ← Back to Dashboard
+            </button>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '16px',
+              padding: '40px',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '64px', marginBottom: '20px' }}>✓</div>
+              <h2 style={{ color: '#fff', fontSize: '24px', marginBottom: '12px' }}>Compliance Risk Check</h2>
+              <p style={{ color: 'rgba(255, 255, 255, 0.6)', marginBottom: '24px' }}>Compliance verification coming soon</p>
+            </div>
+          </div>
+        )
+      case 'timeline':
+        return (
+          <ErrorBoundary>
+            <CaseTimelineGenerator onBack={handleBackToDashboard} />
+          </ErrorBoundary>
         )
       default:
-        return <LegalQueryCard onSubmit={handleQuerySubmit} onJurisdictionSelect={handleJurisdictionSelect} />
+        return <LegalOSDashboard onModuleSelect={handleModuleSelect} />
     }
   }
 
   return (
-    <div className="container" style={{ paddingTop: '100px' }}>
-      {/* Enhanced Header with Glassmorphism Effect */}
-      <header style={{
-        textAlign: 'center',
-        marginBottom: '40px',
-        background: 'rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(10px)',
-        borderRadius: '20px',
-        padding: '30px',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
-      }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '15px',
-          marginBottom: '15px'
-        }}>
-          <div style={{
-            width: '60px',
-            height: '60px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)'
-          }}>
-            <span style={{ fontSize: '24px', color: 'white' }}>⚖️</span>
-          </div>
-          <div>
-            <AnimatedText 
-              text="Nyaya AI"
-              style={{
-                fontSize: '2.5rem',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                margin: 0,
-                fontWeight: '800',
-                letterSpacing: '-0.5px'
-              }}
-            />
-            <p style={{
-              fontSize: '1rem',
-              color: '#6b7280',
-              margin: 0,
-              fontWeight: '500'
-            }}>
-              Legal Intelligence Consultation
-            </p>
-          </div>
-          <div style={{
-            backgroundColor: 'rgba(34, 197, 94, 0.1)',
-            color: '#16a34a',
-            padding: '8px 16px',
-            borderRadius: '20px',
-            fontSize: '12px',
-            fontWeight: '700',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            border: '1px solid rgba(34, 197, 94, 0.3)'
-          }}>
-            <span style={{ width: '8px', height: '8px', backgroundColor: '#22c55e', borderRadius: '50%', boxShadow: '0 0 8px #22c55e' }}></span>
-            AI ACTIVE
-          </div>
-        </div>
-        <p style={{
-          fontSize: '1.1rem',
-          color: '#6b7280',
-          maxWidth: '700px',
-          margin: '0 auto',
-          lineHeight: '1.6'
-        }}>
-          Understand your legal position and get guidance on relevant laws and procedures with our AI-powered multi-jurisdictional consultation.
-        </p>
-      </header>
+    <div className="container" style={{ paddingTop: '100px', position: 'relative' }}>
+      {/* Galaxy Background */}
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+        <Galaxy 
+          mouseInteraction
+          density={1.5}
+          glowIntensity={0.2}
+          saturation={0}
+          hueShift={200}
+          twinkleIntensity={0.4}
+          rotationSpeed={0.05}
+          starSpeed={0.3}
+          speed={0.8}
+        />
+      </div>
 
       {/* Floating Pill-Shaped Glassmorphism Navbar */}
       <nav style={{
@@ -562,7 +594,7 @@ function App() {
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         gap: '10px',
         padding: '12px 24px',
         background: 'rgba(255, 255, 255, 0.1)',
@@ -572,59 +604,40 @@ function App() {
         border: '1px solid rgba(255, 255, 255, 0.1)',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)'
       }}>
-        <div style={{
-          width: '32px',
-          height: '32px',
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '16px'
-        }}>
-          ⚖️
-        </div>
-        <span style={{
-          fontSize: '16px',
-          fontWeight: '700',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text'
-        }}>
+        <span 
+          onClick={handleBackToDashboard}
+          style={{
+            fontSize: '16px',
+            fontWeight: '700',
+            background: 'linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            cursor: 'pointer'
+          }}
+        >
           Nyaya AI
         </span>
+        <button
+          onClick={() => setActiveView('docs')}
+          style={{
+            padding: '8px 20px',
+            background: activeView === 'docs' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '9999px',
+            color: '#fff',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}
+        >
+          EXPLORE
+        </button>
       </nav>
 
-      {/* Active Consultation Card */}
-      <div className="consultation-grid">
-        {renderActiveCard()}
-      </div>
-
-      {/* Enhanced Professional Disclaimer */}
-      <div className="legal-disclaimer">
-        <div className="disclaimer-title">⚖️ Important Legal Notice</div>
-        <div style={{
-          background: 'linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 206, 84, 0.05))',
-          border: '1px solid rgba(255, 193, 7, 0.3)',
-          borderRadius: '12px',
-          padding: '20px',
-          marginBottom: '15px'
-        }}>
-          <strong style={{ color: '#d97706', fontSize: '16px' }}>NOT LEGAL REPRESENTATION</strong>
-          <p style={{ margin: '10px 0 0 0', color: '#d97706', fontSize: '14px', lineHeight: '1.5' }}>
-            This AI assistant provides general information only and does not constitute legal advice, representation, or attorney-client relationship.
-          </p>
-        </div>
-        <p style={{ lineHeight: '1.7' }}>
-          The information provided here is for general guidance and educational purposes only.
-          Based on typical legal scenarios, this analysis helps you understand your rights and obligations.
-          However, every legal situation is unique, and the applicability of laws depends on specific circumstances.
-        </p>
-        <p style={{ marginTop: '15px', lineHeight: '1.7' }}>
-          I strongly recommend consulting with a qualified legal professional for advice tailored to your particular situation.
-          This consultation interface does not create an attorney-client relationship and should not be relied upon as legal advice.
-        </p>
+      {/* Main Content */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {renderView()}
       </div>
     </div>
   )

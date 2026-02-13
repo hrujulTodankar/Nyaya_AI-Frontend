@@ -341,15 +341,23 @@ export const legalQueryService = {
   // Single jurisdiction query
   async submitQuery(queryData) {
     try {
-      const response = await apiClient.post('/nyaya/query', {
+      const payload = {
         query: queryData.query,
         jurisdiction_hint: queryData.jurisdiction_hint || 'India',
-        domain_hint: queryData.domain_hint,
         user_context: {
           role: 'citizen',
           confidence_required: true
         }
-      })
+      }
+      
+      // Only add domain_hint if provided
+      if (queryData.domain_hint) {
+        payload.domain_hint = queryData.domain_hint
+      }
+      
+      console.log('API Request Payload:', payload)
+      
+      const response = await apiClient.post('/nyaya/query', payload)
       
       return {
         success: true,
@@ -357,9 +365,28 @@ export const legalQueryService = {
         trace_id: response.data.trace_id
       }
     } catch (error) {
+      console.error('API Error Details:', error.response?.data)
+      
+      // Extract error message from FastAPI validation error
+      let errorMessage = 'Query failed'
+      if (error.response?.data?.detail) {
+        if (Array.isArray(error.response.data.detail)) {
+          // FastAPI validation errors are arrays
+          errorMessage = error.response.data.detail.map(err => 
+            `${err.loc.join('.')}: ${err.msg}`
+          ).join(', ')
+        } else if (typeof error.response.data.detail === 'string') {
+          errorMessage = error.response.data.detail
+        }
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Query failed',
+        error: errorMessage,
         trace_id: error.response?.data?.trace_id
       }
     }

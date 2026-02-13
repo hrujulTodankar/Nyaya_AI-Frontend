@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from api.schemas import (
     NyayaResponse, MultiJurisdictionResponse, ExplainReasoningResponse,
     FeedbackResponse, TraceResponse, RLSignalResponse, ErrorResponse,

@@ -4,68 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nyaya AI - Legal Intelligence Consultation</title>
+    <!-- Import Inter font for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Enhanced loading state */
         body {
-            font-family: 'Georgia', serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #2c3e50;
+            color: #1f2937;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
-        .container {
+        
+        /* Loading overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .skeleton-loader {
+            width: 100%;
             max-width: 800px;
-            margin: 0 auto;
             padding: 20px;
         }
-        .consultation-card {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            margin: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        
+        .skeleton-item {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
         }
-        .query-input {
+        
+        .skeleton-item:last-child {
+            margin-bottom: 0;
+            width: 80%;
+        }
+        
+        .skeleton-shimmer {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 6px;
-            font-size: 16px;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 100px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 1.5s infinite;
         }
-        .query-input:focus {
-            outline: none;
-            border-color: #007bff;
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
-        .submit-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
+        
+        @media (prefers-reduced-motion: reduce) {
+            .skeleton-shimmer {
+                animation: none;
+            }
         }
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
-        .disclaimer {
-            background-color: #f8f9fa;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #6c757d;
+        
+        #loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
-  <script type="module" crossorigin src="/assets/index-025fb7a1.js"></script>
-  <link rel="stylesheet" href="/assets/index-477dbdd8.css">
+  <script type="module" crossorigin src="/assets/index-DL9Bx-8s.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BNfpvDFy.css">
 </head>
 <body>
-    <div id="root"></div>
-    
+    <div id="loading-overlay" aria-busy="true">
+        <div class="skeleton-loader" role="status" aria-live="polite" aria-label="Loading content">
+            <div class="skeleton-item" style="height: 30px; width: 60%; margin-bottom: 20px;">
+                <div class="skeleton-shimmer"></div>
+            </div>
+            <div class="skeleton-item" style="height: 20px; width: 100%;">
+                <div class="skeleton-shimmer"></div>
+            </div>
+            <div class="skeleton-item" style="height: 20px; width: 80%;">
+                <div class="skeleton-shimmer"></div>
+            </div>
+            <div class="skeleton-item" style="height: 20px;">
+                <div class="skeleton-shimmer"></div>
+            </div>
+        </div>
+    </div>
+    <div id="root"></div>
 </body>
 </html>

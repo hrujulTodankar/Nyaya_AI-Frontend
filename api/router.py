@@ -261,7 +261,7 @@ async def send_rl_signal(
     request: RLSignalRequest,
     trace_id: str = Depends(get_trace_id),
     nonce: str = Depends(validate_nonce),
-    background_tasks: Optional[BackgroundTasks] = None
+    background_tasks: BackgroundTasks = None
 ):
     """Send RL training signal."""
     try:

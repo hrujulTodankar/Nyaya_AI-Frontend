@@ -3,74 +3,32 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Professional Lawyer Website Theme */
+/* Enterprise Dark UI Theme - Legal Research OS */
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
-  color: #1f2937;
-  background: linear-gradient(135deg, #1a365d 0%, #2d3748 50%, #1a365d 100%);
+  color: #fff;
+  background: #000000;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', serif;
+  font-optical-sizing: auto;
+}
+
+p, span, div, a, button, input, textarea, select, label {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 
-
-/* Subtle geometric pattern overlay */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
-    radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 2px, transparent 2px),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 60px 60px, 80px 80px, 40px 40px;
-  background-position: 0 0, 30px 30px, 15px 15px;
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Floating particles effect */
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 100px 100px, 200px 200px;
-  background-position: 0 0, 100px 100px;
-  animation: float 20s ease-in-out infinite;
-  pointer-events: none;
-  z-index: -2;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(180deg); }
-}
-
-/* Subtle vignette effect */
-.container::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
-  pointer-events: none;
-  z-index: -3;
-}
 
 
 
@@ -143,43 +101,28 @@ body::after {
 
 /* Enhanced button styling */
 .consultation-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: white;
+  color: black;
   padding: 14px 30px;
   border: none;
-  border-radius: 12px;
+  border-radius: 9999px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   margin-top: 20px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
 }
 
-.consultation-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.consultation-btn:hover::before {
-  left: 100%;
-}
-
 .consultation-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .consultation-btn:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .consultation-btn:disabled {
@@ -187,6 +130,29 @@ body::after {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+/* Secondary button styling */
+.consultation-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: white;
+  padding: 14px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.consultation-btn-secondary:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
 }
 
 /* Enhanced disclaimer styling */
@@ -258,15 +224,6 @@ body::after {
     margin-bottom: 20px;
   }
 
-  /* Mobile-specific background adjustments */
-  body::before {
-    background-size: 40px 40px, 60px 60px, 30px 30px;
-  }
-
-  body::after {
-    background-size: 80px 80px, 150px 150px;
-  }
-
   /* Responsive grid for mobile - single column */
   .consultation-card > div[style*="grid"] {
     grid-template-columns: 1fr !important;
@@ -320,23 +277,6 @@ body::after {
   }
 }
 
-/* Accessibility improvements */
-@media (prefers-reduced-motion: reduce) {
-  body::after {
-    animation: none;
-  }
-
-  .consultation-card,
-  .consultation-btn,
-  .consultation-input {
-    transition: none;
-  }
-
-  .consultation-btn::before {
-    transition: none;
-  }
-}
-
 /* Focus styles for accessibility */
 .consultation-input:focus,
 .consultation-btn:focus {
@@ -344,22 +284,31 @@ body::after {
   outline-offset: 2px;
 }
 
-/* Scrollbar styling */
+/* Dark theme scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark theme input and select styling */
+input, select, textarea {
+  color-scheme: dark;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 /* High contrast mode support */

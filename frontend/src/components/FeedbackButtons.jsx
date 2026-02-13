@@ -91,16 +91,15 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
   return (
     <div style={{
       marginTop: '20px',
-      padding: '15px',
-      backgroundColor: '#f8f9fa',
-      borderRadius: '8px',
-      border: '1px solid #e9ecef',
-      position: 'relative',
-      zIndex: 10
+      padding: '20px',
+      background: 'rgba(255, 255, 255, 0.05)',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      borderRadius: '12px'
     }}>
       <h5 style={{
         fontSize: '14px',
-        color: '#2c3e50',
+        color: '#fff',
         marginBottom: '15px',
         fontWeight: '600'
       }}>
@@ -111,7 +110,7 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
       <div style={{ marginBottom: '15px' }}>
         <div style={{
           fontSize: '13px',
-          color: '#495057',
+          color: 'rgba(255, 255, 255, 0.7)',
           marginBottom: '8px',
           fontWeight: '500'
         }}>
@@ -123,10 +122,10 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
             disabled={submitting}
             style={{
               padding: '8px 12px',
-              border: feedback.helpful === true ? '2px solid #28a745' : '2px solid #e9ecef',
+              border: feedback.helpful === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '6px',
-              background: feedback.helpful === true ? '#28a745' : 'white',
-              color: feedback.helpful === true ? 'white' : '#495057',
+              background: feedback.helpful === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
+              color: feedback.helpful === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
               cursor: 'pointer',
               fontSize: '13px',
               display: 'flex',
@@ -141,10 +140,10 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
             disabled={submitting}
             style={{
               padding: '8px 12px',
-              border: feedback.helpful === false ? '2px solid #dc3545' : '2px solid #e9ecef',
+              border: feedback.helpful === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '6px',
-              background: feedback.helpful === false ? '#dc3545' : 'white',
-              color: feedback.helpful === false ? 'white' : '#495057',
+              background: feedback.helpful === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
+              color: feedback.helpful === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
               cursor: 'pointer',
               fontSize: '13px',
               display: 'flex',
@@ -161,7 +160,7 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
       <div style={{ marginBottom: '15px' }}>
         <div style={{
           fontSize: '13px',
-          color: '#495057',
+          color: 'rgba(255, 255, 255, 0.7)',
           marginBottom: '8px',
           fontWeight: '500'
         }}>
@@ -173,10 +172,10 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
             disabled={submitting}
             style={{
               padding: '6px 12px',
-              border: feedback.clear === true ? '2px solid #28a745' : '2px solid #e9ecef',
+              border: feedback.clear === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '6px',
-              background: feedback.clear === true ? '#28a745' : 'white',
-              color: feedback.clear === true ? 'white' : '#495057',
+              background: feedback.clear === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
+              color: feedback.clear === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
               cursor: 'pointer',
               fontSize: '13px'
             }}
@@ -188,10 +187,10 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
             disabled={submitting}
             style={{
               padding: '6px 12px',
-              border: feedback.clear === false ? '2px solid #dc3545' : '2px solid #e9ecef',
+              border: feedback.clear === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '6px',
-              background: feedback.clear === false ? '#dc3545' : 'white',
-              color: feedback.clear === false ? 'white' : '#495057',
+              background: feedback.clear === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
+              color: feedback.clear === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
               cursor: 'pointer',
               fontSize: '13px'
             }}
@@ -205,7 +204,7 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
       <div>
         <div style={{
           fontSize: '13px',
-          color: '#495057',
+          color: 'rgba(255, 255, 255, 0.7)',
           marginBottom: '8px',
           fontWeight: '500'
         }}>
@@ -217,10 +216,10 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
             disabled={submitting}
             style={{
               padding: '6px 12px',
-              border: feedback.matchesSituation === true ? '2px solid #28a745' : '2px solid #e9ecef',
+              border: feedback.matchesSituation === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '6px',
-              background: feedback.matchesSituation === true ? '#28a745' : 'white',
-              color: feedback.matchesSituation === true ? 'white' : '#495057',
+              background: feedback.matchesSituation === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
+              color: feedback.matchesSituation === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
               cursor: 'pointer',
               fontSize: '13px'
             }}
@@ -232,10 +231,10 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
             disabled={submitting}
             style={{
               padding: '6px 12px',
-              border: feedback.matchesSituation === false ? '2px solid #dc3545' : '2px solid #e9ecef',
+              border: feedback.matchesSituation === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '6px',
-              background: feedback.matchesSituation === false ? '#dc3545' : 'white',
-              color: feedback.matchesSituation === false ? 'white' : '#495057',
+              background: feedback.matchesSituation === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
+              color: feedback.matchesSituation === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
               cursor: 'pointer',
               fontSize: '13px'
             }}
@@ -250,10 +249,10 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
         <div style={{
           marginTop: '15px',
           padding: '10px',
-          backgroundColor: '#f8d7da',
-          border: '1px solid #f5c6cb',
+          background: 'rgba(220, 53, 69, 0.2)',
+          border: '1px solid rgba(220, 53, 69, 0.4)',
           borderRadius: '6px',
-          color: '#721c24',
+          color: '#ff6b6b',
           fontSize: '13px'
         }}>
           {error}
