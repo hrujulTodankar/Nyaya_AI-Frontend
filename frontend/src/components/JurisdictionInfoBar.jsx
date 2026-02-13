@@ -1,18 +1,9 @@
 import React from 'react';
 
 const JurisdictionInfoBar = ({ country, courtSystem, authorityFraming, emergencyGuidance }) => {
-  // Error handling for missing required data
+  // Don't render if data is missing
   if (!country || !courtSystem || !authorityFraming || !emergencyGuidance) {
-    return (
-      <div className="consultation-card">
-        <div style={{ textAlign: 'center', padding: '20px' }}>
-          <h3 style={{ color: '#dc3545', marginBottom: '10px' }}>Data Error</h3>
-          <p style={{ color: '#6c757d' }}>
-            Unable to display jurisdiction information due to missing required data.
-          </p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
