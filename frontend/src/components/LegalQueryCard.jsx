@@ -90,6 +90,7 @@ const LegalQueryCard = () => {
           { icon: '🔒', text: 'Confidential' }
         ].map((benefit, i) => (
           <div key={i} style={{
+            flex: 1,
             padding: '12px',
             background: 'rgba(102, 126, 234, 0.05)',
             borderRadius: '8px',
