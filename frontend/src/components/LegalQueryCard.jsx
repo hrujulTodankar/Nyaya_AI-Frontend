@@ -330,58 +330,6 @@ const LegalQueryCard = () => {
             </div>
           )}
 
-          {/* Remedies */}
-          {response.reasoning_trace?.remedies && response.reasoning_trace.remedies.length > 0 && (
-            <div style={{ marginBottom: '24px' }}>
-              <h4 style={{ 
-                color: '#fff', 
-                fontSize: '18px', 
-                marginBottom: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}>
-                💊 Available Remedies
-              </h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {response.reasoning_trace.remedies.map((remedy, idx) => (
-                  <div key={idx} style={{
-                    padding: '16px',
-                    background: 'rgba(16, 185, 129, 0.1)',
-                    border: '1px solid rgba(16, 185, 129, 0.3)',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    gap: '12px'
-                  }}>
-                    <div style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '50%',
-                      background: '#10b981',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '13px',
-                      fontWeight: '700',
-                      color: '#fff',
-                      flexShrink: 0
-                    }}>
-                      {idx + 1}
-                    </div>
-                    <div style={{ 
-                      color: 'rgba(255, 255, 255, 0.9)', 
-                      fontSize: '14px', 
-                      lineHeight: '1.6',
-                      flex: 1
-                    }}>
-                      {remedy}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Procedural Steps */}
           {response.reasoning_trace?.procedural_steps && response.reasoning_trace.procedural_steps.length > 0 && (
             <div style={{ marginBottom: '24px' }}>
