@@ -220,6 +220,34 @@ const LegalQueryCard = () => {
                 </pre>
               </div>
 
+              {/* Enforcement Decision */}
+              {response.reasoning_trace?.enforcement_decision && (
+                <div style={{ marginTop: '20px' }}>
+                  <h5 style={{ 
+                    color: '#ef4444', 
+                    fontSize: '16px', 
+                    marginBottom: '12px',
+                    fontWeight: '600'
+                  }}>
+                    ⚖️ Enforcement Decision
+                  </h5>
+                  <div style={{
+                    padding: '16px',
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    borderRadius: '8px'
+                  }}>
+                    <div style={{ 
+                      color: 'rgba(255, 255, 255, 0.9)', 
+                      fontSize: '14px', 
+                      lineHeight: '1.6'
+                    }}>
+                      {response.reasoning_trace.enforcement_decision}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Remedies within Legal Analysis */}
               {response.reasoning_trace?.remedies && response.reasoning_trace.remedies.length > 0 && (
                 <div style={{ marginTop: '20px' }}>
