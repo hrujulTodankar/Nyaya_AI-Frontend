@@ -146,23 +146,7 @@ const LegalQueryCard = () => {
             🏛️ Legal Assessment
           </h3>
 
-          {/* Jurisdiction Request vs Response */}
-          <div style={{
-            padding: '16px',
-            background: 'rgba(245, 158, 11, 0.1)',
-            border: '1px solid rgba(245, 158, 11, 0.3)',
-            borderRadius: '8px',
-            marginBottom: '24px'
-          }}>
-            <div style={{ color: '#f59e0b', fontSize: '13px', fontWeight: '600', marginBottom: '8px' }}>
-              ⚠️ Jurisdiction Check
-            </div>
-            <div style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '14px' }}>
-              <strong>You selected:</strong> {selectedJurisdiction} | <strong>Backend returned:</strong> {response.jurisdiction_detected || response.jurisdiction}
-            </div>
-          </div>
-
-          {/* Key Metrics */}
+          {/* Key Metrics */
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -235,6 +219,56 @@ const LegalQueryCard = () => {
                   {response.reasoning_trace.legal_analysis}
                 </pre>
               </div>
+
+              {/* Remedies within Legal Analysis */}
+              {response.reasoning_trace?.remedies && response.reasoning_trace.remedies.length > 0 && (
+                <div style={{ marginTop: '20px' }}>
+                  <h5 style={{ 
+                    color: '#10b981', 
+                    fontSize: '16px', 
+                    marginBottom: '12px',
+                    fontWeight: '600'
+                  }}>
+                    💊 Available Remedies
+                  </h5>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {response.reasoning_trace.remedies.map((remedy, idx) => (
+                      <div key={idx} style={{
+                        padding: '16px',
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        gap: '12px'
+                      }}>
+                        <div style={{
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '50%',
+                          background: '#10b981',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '13px',
+                          fontWeight: '700',
+                          color: '#fff',
+                          flexShrink: 0
+                        }}>
+                          {idx + 1}
+                        </div>
+                        <div style={{ 
+                          color: 'rgba(255, 255, 255, 0.9)', 
+                          fontSize: '14px', 
+                          lineHeight: '1.6',
+                          flex: 1
+                        }}>
+                          {remedy}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -274,21 +308,49 @@ const LegalQueryCard = () => {
               <h4 style={{ 
                 color: '#fff', 
                 fontSize: '18px', 
-                marginBottom: '12px'
+                marginBottom: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}>
                 💊 Available Remedies
               </h4>
-              <ul style={{ 
-                margin: 0, 
-                paddingLeft: '20px', 
-                color: 'rgba(255, 255, 255, 0.8)',
-                fontSize: '14px',
-                lineHeight: '2'
-              }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {response.reasoning_trace.remedies.map((remedy, idx) => (
-                  <li key={idx}>{remedy}</li>
+                  <div key={idx} style={{
+                    padding: '16px',
+                    background: 'rgba(16, 185, 129, 0.1)',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    gap: '12px'
+                  }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: '#10b981',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      color: '#fff',
+                      flexShrink: 0
+                    }}>
+                      {idx + 1}
+                    </div>
+                    <div style={{ 
+                      color: 'rgba(255, 255, 255, 0.9)', 
+                      fontSize: '14px', 
+                      lineHeight: '1.6',
+                      flex: 1
+                    }}>
+                      {remedy}
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
 
