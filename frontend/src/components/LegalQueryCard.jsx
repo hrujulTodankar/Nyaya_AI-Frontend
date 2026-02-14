@@ -31,7 +31,6 @@ const LegalQueryCard = () => {
       if (result.success) {
         setTraceId(result.trace_id)
         
-        // Display actual backend response
         const backendData = result.data
         console.log('=== FRONTEND DEBUG ===')
         console.log('Requested Jurisdiction:', jurisdictionMap[selectedJurisdiction])
@@ -53,7 +52,6 @@ const LegalQueryCard = () => {
 
   return (
     <>
-      {/* Query Form */}
       <div style={{
         background: 'rgba(255, 255, 255, 0.05)',
         backdropFilter: 'blur(10px)',
@@ -63,7 +61,6 @@ const LegalQueryCard = () => {
       }}>
         <h2 style={{ color: '#fff', fontSize: '24px', marginBottom: '24px' }}>Ask Legal Question</h2>
         
-        {/* Jurisdiction Selector */}
         <div style={{ marginBottom: '20px' }}>
           <label style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px', marginBottom: '8px', display: 'block' }}>Select Jurisdiction</label>
           <div style={{ display: 'flex', gap: '12px' }}>
@@ -126,7 +123,6 @@ const LegalQueryCard = () => {
         </form>
       </div>
 
-      {/* Response Section - Backend Legal Assessment */}
       {response && (
         <div style={{ 
           marginTop: '25px', 
@@ -146,7 +142,6 @@ const LegalQueryCard = () => {
             🏛️ Legal Assessment
           </h3>
 
-          {/* Key Metrics */
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -188,7 +183,6 @@ const LegalQueryCard = () => {
             </div>
           </div>
 
-          {/* Legal Analysis */}
           {response.reasoning_trace?.legal_analysis && (
             <div style={{ marginBottom: '24px' }}>
               <h4 style={{ 
@@ -220,7 +214,6 @@ const LegalQueryCard = () => {
                 </pre>
               </div>
 
-              {/* Enforcement Decision */}
               {response.reasoning_trace?.enforcement_decision && (
                 <div style={{ marginTop: '20px' }}>
                   <h5 style={{ 
@@ -248,7 +241,6 @@ const LegalQueryCard = () => {
                 </div>
               )}
 
-              {/* Remedies within Legal Analysis */}
               {response.reasoning_trace?.remedies && response.reasoning_trace.remedies.length > 0 && (
                 <div style={{ marginTop: '20px' }}>
                   <h5 style={{ 
@@ -300,7 +292,6 @@ const LegalQueryCard = () => {
             </div>
           )}
 
-          {/* Statutes */}
           {response.statutes && response.statutes.length > 0 && (
             <div style={{ marginBottom: '24px' }}>
               <h4 style={{ 
@@ -330,7 +321,6 @@ const LegalQueryCard = () => {
             </div>
           )}
 
-          {/* Procedural Steps */}
           {response.reasoning_trace?.procedural_steps && response.reasoning_trace.procedural_steps.length > 0 && (
             <div style={{ marginBottom: '24px' }}>
               <h4 style={{ 
@@ -375,7 +365,6 @@ const LegalQueryCard = () => {
             </div>
           )}
 
-          {/* Legal Route */}
           {response.legal_route && response.legal_route.length > 0 && (
             <div style={{ marginBottom: '24px' }}>
               <h4 style={{ 
@@ -417,7 +406,6 @@ const LegalQueryCard = () => {
             </div>
           )}
 
-          {/* Confidence Breakdown */}
           {response.confidence && (
             <div style={{ marginBottom: '24px' }}>
               <h4 style={{ 
@@ -447,7 +435,6 @@ const LegalQueryCard = () => {
             </div>
           )}
 
-          {/* Trace ID */}
           <div style={{
             padding: '12px 16px',
             background: 'rgba(255, 255, 255, 0.05)',
@@ -459,7 +446,6 @@ const LegalQueryCard = () => {
             <span style={{ color: '#fff', fontSize: '13px', fontFamily: 'monospace' }}>{traceId}</span>
           </div>
 
-          {/* Feedback Section */}
           <FeedbackButtons traceId={traceId} context="Legal Query Response" />
         </div>
       )}
