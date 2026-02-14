@@ -36,8 +36,8 @@ const LegalQueryCard = () => {
         console.log('Requested Jurisdiction:', jurisdictionMap[selectedJurisdiction])
         console.log('Backend Response:', backendData)
         console.log('Returned Jurisdiction:', backendData.jurisdiction_detected || backendData.jurisdiction)
-        console.log('Enforcement Decision:', backendData.reasoning_trace?.enforcement_decision)
-        console.log('Reasoning Trace Keys:', Object.keys(backendData.reasoning_trace || {}))
+        console.log('Enforcement Decision (root):', backendData.enforcement_decision)
+        console.log('Enforcement Decision (trace):', backendData.reasoning_trace?.enforcement_decision)
         console.log('======================')
         
         setResponse(backendData)
@@ -216,7 +216,7 @@ const LegalQueryCard = () => {
                 </pre>
               </div>
 
-              {response.reasoning_trace?.enforcement_decision && (
+              {(response.enforcement_decision || response.reasoning_trace?.enforcement_decision) && (
                 <div style={{ marginTop: '20px' }}>
                   <h5 style={{ 
                     color: '#ef4444', 
@@ -235,18 +235,13 @@ const LegalQueryCard = () => {
                     <div style={{ 
                       color: 'rgba(255, 255, 255, 0.9)', 
                       fontSize: '14px', 
-                      lineHeight: '1.6'
+                      lineHeight: '1.6',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
                     }}>
-                      {response.reasoning_trace.enforcement_decision}
+                      {response.enforcement_decision || response.reasoning_trace.enforcement_decision}
                     </div>
-                  </div>
-                </div>
-              )}
-
-              {!response.reasoning_trace?.enforcement_decision && (
-                <div style={{ marginTop: '20px', padding: '12px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: '8px' }}>
-                  <div style={{ color: '#f59e0b', fontSize: '13px' }}>
-                    ℹ️ Enforcement decision not provided by backend
                   </div>
                 </div>
               )}
