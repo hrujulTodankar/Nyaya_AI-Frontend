@@ -17,24 +17,30 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
     setIsSubmitting(true)
 
     try {
-      const endpoint = isLogin ? 'http://localhost:5000/api/auth/login' : 'http://localhost:5000/api/auth/signup'
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      })
-
-      const data = await response.json()
-
-      if (response.ok && data.success) {
-        localStorage.setItem('nyaya_user', JSON.stringify(data.user))
-        onAuthSuccess(data.user)
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      if (isLogin) {
+        if (formData.email && formData.password) {
+          const userName = formData.email.split('@')[0]
+          const userData = { email: formData.email, name: userName }
+          localStorage.setItem('nyaya_user', JSON.stringify(userData))
+          onAuthSuccess(userData)
+        } else {
+          setError('Please enter email and password')
+          setIsSubmitting(false)
+        }
       } else {
-        setError(data.error || 'Authentication failed')
+        if (formData.email && formData.password && formData.name) {
+          const userData = { email: formData.email, name: formData.name }
+          localStorage.setItem('nyaya_user', JSON.stringify(userData))
+          onAuthSuccess(userData)
+        } else {
+          setError('Please fill all fields')
+          setIsSubmitting(false)
+        }
       }
     } catch (err) {
-      setError('Failed to connect to server')
-    } finally {
+      setError('Authentication failed')
       setIsSubmitting(false)
     }
   }
