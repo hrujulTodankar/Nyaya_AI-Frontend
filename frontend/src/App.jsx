@@ -646,11 +646,20 @@ function App() {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: '10px',
             cursor: 'pointer'
           }}
         >
-          <img src="/03.png" alt="Nyaya AI Logo" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
+          <img 
+            src="/03.png" 
+            alt="Nyaya AI Logo" 
+            style={{ 
+              width: '40px', 
+              height: '40px', 
+              objectFit: 'contain',
+              filter: 'brightness(0) invert(1)'
+            }} 
+          />
           <span style={{
             fontSize: '16px',
             fontWeight: '700',
