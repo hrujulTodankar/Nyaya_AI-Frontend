@@ -21,7 +21,7 @@ import GlareHover from './components/GlareHover.jsx'
 import AnimatedText from './components/AnimatedText.jsx'
 import AuthPage from './components/AuthPage.jsx'
 import LawAgentView from './components/LawAgentView.jsx'
-import GooeyNav from './components/GooeyNav.jsx'
+import StaggeredMenu from './components/StaggeredMenu.jsx'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -691,39 +691,23 @@ function App() {
             Nyaya AI
           </span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '13px' }}>{user.name}</span>
-          <GooeyNav
-            items={[
-              { label: 'Chat Mode', value: 'consult' },
-              { label: 'Law Agent Mode', value: 'law-agent' },
-              { label: 'EXPLORE', value: 'docs' }
-            ]}
-            particleCount={10}
-            particleDistances={[60, 5]}
-            particleR={80}
-            initialActiveIndex={activeView === 'consult' ? 0 : activeView === 'law-agent' ? 1 : activeView === 'docs' ? 2 : 0}
-            animationTime={400}
-            timeVariance={200}
-            colors={[1, 2, 3, 1]}
-            onItemClick={(item) => setActiveView(item.value)}
-          />
-          <button
-            onClick={handleLogout}
-            style={{
-              padding: '8px 20px',
-              background: 'rgba(239, 68, 68, 0.2)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              borderRadius: '9999px',
-              color: '#fff',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-          >
-            Logout
-          </button>
-        </div>
+        <StaggeredMenu
+          items={[
+            { label: 'Chat Mode', value: 'consult' },
+            { label: 'Law Agent', value: 'law-agent' },
+            { label: 'Explore', value: 'docs' },
+            { label: user.name, value: 'profile' },
+            { label: 'Logout', value: 'logout' }
+          ]}
+          accentColor="#667eea"
+          onItemClick={(item) => {
+            if (item.value === 'logout') {
+              handleLogout();
+            } else {
+              setActiveView(item.value);
+            }
+          }}
+        />
       </nav>
 
       {/* Main Content */}
