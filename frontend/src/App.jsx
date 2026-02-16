@@ -694,9 +694,8 @@ function App() {
         </div>
         <button
           onClick={() => {
-            const toggleBtn = document.querySelector('.sm-toggle');
-            if (toggleBtn) {
-              toggleBtn.click();
+            if (menuRef.current) {
+              menuRef.current.toggle();
             }
           }}
           style={{
@@ -715,6 +714,7 @@ function App() {
       </nav>
 
       <StaggeredMenu
+        ref={menuRef}
         items={[
           { label: 'Chat Mode', value: 'consult' },
           { label: 'Law Agent', value: 'law-agent' },

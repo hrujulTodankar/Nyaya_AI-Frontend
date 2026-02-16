@@ -1,8 +1,8 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import { gsap } from 'gsap';
 import './StaggeredMenu.css';
 
-const StaggeredMenu = ({ items = [], onItemClick, accentColor = '#667eea' }) => {
+const StaggeredMenu = forwardRef(({ items = [], onItemClick, accentColor = '#667eea' }, ref) => {
   const [open, setOpen] = useState(false);
   const panelRef = useRef(null);
   const preLayersRef = useRef(null);
@@ -56,6 +56,10 @@ const StaggeredMenu = ({ items = [], onItemClick, accentColor = '#667eea' }) => 
     }
   }, [open]);
 
+  useImperativeHandle(ref, () => ({
+    toggle: toggleMenu
+  }));
+
   const handleItemClick = (item) => {
     toggleMenu();
     if (onItemClick) {
@@ -64,7 +68,7 @@ const StaggeredMenu = ({ items = [], onItemClick, accentColor = '#667eea' }) => 
   };
 
   return (
-    <div className="staggered-menu-wrapper" style={{ '--sm-accent': accentColor }}>
+    <div className="staggered-menu-wrapper" style={{ '--sm-accent': accentColor, display: open ? 'block' : 'none' }}>
       <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
         <div className="sm-prelayer" style={{ background: 'rgba(255, 255, 255, 0.1)' }} />
         <div className="sm-prelayer" style={{ background: 'rgba(255, 255, 255, 0.05)' }} />
