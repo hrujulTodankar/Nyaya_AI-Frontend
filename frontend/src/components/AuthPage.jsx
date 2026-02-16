@@ -96,9 +96,12 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
       }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <h1 style={{ color: '#fff', fontSize: '32px', fontWeight: '700', marginBottom: '8px' }}>
-            🏛️ Nyaya AI
-          </h1>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '8px' }}>
+            <img src="/03.svg" alt="Nyaya AI Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+            <h1 style={{ color: '#fff', fontSize: '32px', fontWeight: '700', margin: 0 }}>
+              Nyaya AI
+            </h1>
+          </div>
           <p style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px' }}>
             Sovereign Legal Intelligence Platform
           </p>
