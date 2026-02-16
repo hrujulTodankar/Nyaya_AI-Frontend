@@ -22,6 +22,7 @@ import AnimatedText from './components/AnimatedText.jsx'
 import AuthPage from './components/AuthPage.jsx'
 import LawAgentView from './components/LawAgentView.jsx'
 import GooeyNav from './components/GooeyNav.jsx'
+import GlassSurface from './components/GlassSurface.jsx'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -644,24 +645,37 @@ function App() {
       </div>
 
       {/* Floating Pill-Shaped Glassmorphism Navbar */}
-      <nav style={{
-        position: 'fixed',
-        top: '20px',
-        left: '20px',
-        right: '20px',
-        zIndex: 1000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '10px',
-        padding: '12px 24px',
-        background: 'rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderRadius: '9999px',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)'
-      }}>
+      <GlassSurface
+        width="auto"
+        height="auto"
+        borderRadius={9999}
+        displace={0.3}
+        distortionScale={-180}
+        redOffset={0}
+        greenOffset={5}
+        blueOffset={10}
+        brightness={50}
+        opacity={0.1}
+        backgroundOpacity={0.1}
+        saturation={1.8}
+        mixBlendMode="screen"
+        style={{
+          position: 'fixed',
+          top: '20px',
+          left: '20px',
+          right: '20px',
+          zIndex: 1000,
+          padding: '12px 24px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)'
+        }}
+      >
+        <nav style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '10px',
+          width: '100%'
+        }}>
         <div 
           onClick={handleBackToDashboard}
           style={{
@@ -724,7 +738,8 @@ function App() {
             Logout
           </button>
         </div>
-      </nav>
+        </nav>
+      </GlassSurface>
 
       {/* Main Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
