@@ -447,6 +447,12 @@ function App() {
     setUser(userData)
   }
 
+  const handleSkipAuth = () => {
+    const guestUser = { email: 'guest@nyaya.ai', name: 'Guest User' }
+    localStorage.setItem('nyaya_user', JSON.stringify(guestUser))
+    setUser(guestUser)
+  }
+
   const handleLogout = () => {
     localStorage.removeItem('nyaya_user')
     setUser(null)
@@ -460,7 +466,7 @@ function App() {
   }
 
   if (!user) {
-    return <AuthPage onAuthSuccess={handleAuthSuccess} />
+    return <AuthPage onAuthSuccess={handleAuthSuccess} onSkipAuth={handleSkipAuth} />
   }
 
   const handleModuleSelect = (moduleId) => {

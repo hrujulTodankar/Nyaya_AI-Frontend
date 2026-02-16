@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const AuthPage = ({ onAuthSuccess }) => {
+const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
   const [isLogin, setIsLogin] = useState(true)
   const [formData, setFormData] = useState({
     email: '',
@@ -227,6 +227,21 @@ const AuthPage = ({ onAuthSuccess }) => {
               {isLogin ? 'Sign Up' : 'Login'}
             </span>
           </p>
+          <button
+            onClick={onSkipAuth}
+            style={{
+              marginTop: '12px',
+              padding: '8px 16px',
+              background: 'transparent',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '8px',
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontSize: '12px',
+              cursor: 'pointer'
+            }}
+          >
+            Continue as Guest
+          </button>
         </div>
       </div>
     </div>
