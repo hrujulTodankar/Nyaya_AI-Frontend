@@ -23,8 +23,9 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
       if (isLogin) {
         // Login logic
         if (formData.email && formData.password) {
-          localStorage.setItem('nyaya_user', JSON.stringify({ email: formData.email, name: formData.name || 'User' }))
-          onAuthSuccess({ email: formData.email, name: formData.name || 'User' })
+          const userName = formData.email.split('@')[0]
+          localStorage.setItem('nyaya_user', JSON.stringify({ email: formData.email, name: userName }))
+          onAuthSuccess({ email: formData.email, name: userName })
         } else {
           setError('Please enter email and password')
         }
