@@ -20,6 +20,7 @@ import SkeletonLoader from './components/SkeletonLoader.jsx'
 import GlareHover from './components/GlareHover.jsx'
 import AnimatedText from './components/AnimatedText.jsx'
 import AuthPage from './components/AuthPage.jsx'
+import LawAgentView from './components/LawAgentView.jsx'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -434,6 +435,7 @@ function App() {
   const [selectedJurisdiction, setSelectedJurisdiction] = useState('India')
   const [user, setUser] = useState(null)
   const [isAuthChecking, setIsAuthChecking] = useState(true)
+  const [lastResponse, setLastResponse] = useState(null)
 
   useEffect(() => {
     const storedUser = localStorage.getItem('nyaya_user')
@@ -502,7 +504,31 @@ function App() {
               ← Back to Dashboard
             </button>
             <ErrorBoundary>
-              <LegalQueryCard />
+              <LegalQueryCard onResponseReceived={setLastResponse} />
+            </ErrorBoundary>
+          </div>
+        )
+      case 'law-agent':
+        return (
+          <div>
+            <button
+              onClick={handleBackToDashboard}
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                color: '#fff',
+                cursor: 'pointer',
+                marginBottom: '20px',
+                fontSize: '14px',
+                marginLeft: '20px'
+              }}
+            >
+              ← Back to Dashboard
+            </button>
+            <ErrorBoundary>
+              <LawAgentView responseData={lastResponse} />
             </ErrorBoundary>
           </div>
         )
@@ -672,6 +698,36 @@ function App() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '13px' }}>{user.name}</span>
+          <button
+            onClick={() => setActiveView('consult')}
+            style={{
+              padding: '8px 20px',
+              background: activeView === 'consult' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '9999px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Chat Mode
+          </button>
+          <button
+            onClick={() => setActiveView('law-agent')}
+            style={{
+              padding: '8px 20px',
+              background: activeView === 'law-agent' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '9999px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Law Agent Mode
+          </button>
           <button
             onClick={() => setActiveView('docs')}
             style={{

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import FeedbackButtons from './FeedbackButtons.jsx'
 import { legalQueryService } from '../services/nyayaApi.js'
 
-const LegalQueryCard = () => {
+const LegalQueryCard = ({ onResponseReceived }) => {
   const [query, setQuery] = useState('')
   const [selectedJurisdiction, setSelectedJurisdiction] = useState('India')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -41,6 +41,9 @@ const LegalQueryCard = () => {
         console.log('======================')
         
         setResponse(backendData)
+        if (onResponseReceived) {
+          onResponseReceived(backendData)
+        }
       } else {
         alert(`Error: ${result.error || 'Failed to get response from backend'}`)
       }
