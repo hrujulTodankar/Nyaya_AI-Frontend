@@ -650,7 +650,7 @@ function App() {
             cursor: 'pointer'
           }}
         >
-          <span style={{ fontSize: '24px' }}>🏛️</span>
+          <img src="/03.png" alt="Nyaya AI Logo" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
           <span style={{
             fontSize: '16px',
             fontWeight: '700',
