@@ -651,7 +651,7 @@ function App() {
           }}
         >
           <img 
-            src="/03.png" 
+            src="/03.svg" 
             alt="Nyaya AI Logo" 
             style={{ 
               width: '40px', 
