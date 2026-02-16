@@ -641,20 +641,27 @@ function App() {
         border: '1px solid rgba(255, 255, 255, 0.1)',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)'
       }}>
-        <span 
+        <div 
           onClick={handleBackToDashboard}
           style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'pointer'
+          }}
+        >
+          <span style={{ fontSize: '24px' }}>🏛️</span>
+          <span style={{
             fontSize: '16px',
             fontWeight: '700',
             background: 'linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            cursor: 'pointer'
-          }}
-        >
-          Nyaya AI
-        </span>
+            backgroundClip: 'text'
+          }}>
+            Nyaya AI
+          </span>
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '13px' }}>{user.name}</span>
           <button
