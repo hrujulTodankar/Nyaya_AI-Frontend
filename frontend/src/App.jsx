@@ -19,6 +19,7 @@ import EnforcementStatusCard from './components/EnforcementStatusCard.jsx'
 import SkeletonLoader from './components/SkeletonLoader.jsx'
 import GlareHover from './components/GlareHover.jsx'
 import AnimatedText from './components/AnimatedText.jsx'
+import AuthPage from './components/AuthPage.jsx'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -431,6 +432,36 @@ function App() {
   const [activeModule, setActiveModule] = useState(null)
   const [queryResult, setQueryResult] = useState(null)
   const [selectedJurisdiction, setSelectedJurisdiction] = useState('India')
+  const [user, setUser] = useState(null)
+  const [isAuthChecking, setIsAuthChecking] = useState(true)
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('nyaya_user')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
+    setIsAuthChecking(false)
+  }, [])
+
+  const handleAuthSuccess = (userData) => {
+    setUser(userData)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('nyaya_user')
+    setUser(null)
+    setActiveView('dashboard')
+  }
+
+  if (isAuthChecking) {
+    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000' }}>
+      <div style={{ color: '#fff' }}>Loading...</div>
+    </div>
+  }
+
+  if (!user) {
+    return <AuthPage onAuthSuccess={handleAuthSuccess} />
+  }
 
   const handleModuleSelect = (moduleId) => {
     setActiveModule(moduleId)
@@ -618,21 +649,39 @@ function App() {
         >
           Nyaya AI
         </span>
-        <button
-          onClick={() => setActiveView('docs')}
-          style={{
-            padding: '8px 20px',
-            background: activeView === 'docs' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '9999px',
-            color: '#fff',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer'
-          }}
-        >
-          EXPLORE
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '13px' }}>{user.name}</span>
+          <button
+            onClick={() => setActiveView('docs')}
+            style={{
+              padding: '8px 20px',
+              background: activeView === 'docs' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '9999px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            EXPLORE
+          </button>
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '8px 20px',
+              background: 'rgba(239, 68, 68, 0.2)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              borderRadius: '9999px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Logout
+          </button>
+        </div>
       </nav>
 
       {/* Main Content */}
