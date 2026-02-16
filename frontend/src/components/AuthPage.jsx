@@ -119,18 +119,17 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
             <button
               type="button"
               onClick={(e) => { triggerLogin(e); setIsLogin(true); }}
-            style={{
-              flex: 1,
-              padding: '12px',
-              background: isLogin ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-              border: isLogin ? '2px solid rgba(255, 255, 255, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '8px',
-              color: '#fff',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-            }}
+              style={{
+                flex: 1,
+                padding: '12px',
+                background: isLogin ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                border: isLogin ? '2px solid rgba(255, 255, 255, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                color: '#fff',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
             >
               Login
             </button>
@@ -140,18 +139,17 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
             <button
               type="button"
               onClick={(e) => { triggerSignup(e); setIsLogin(false); }}
-            style={{
-              flex: 1,
-              padding: '12px',
-              background: !isLogin ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-              border: !isLogin ? '2px solid rgba(255, 255, 255, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '8px',
-              color: '#fff',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-            }}
+              style={{
+                flex: 1,
+                padding: '12px',
+                background: !isLogin ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                border: !isLogin ? '2px solid rgba(255, 255, 255, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                color: '#fff',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
             >
               Sign Up
             </button>
@@ -253,18 +251,17 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
               type="submit"
               disabled={isSubmitting}
               onClick={(e) => { if (!isSubmitting) triggerSubmit(e); }}
-            style={{
-              width: '100%',
-              padding: '14px',
-              background: isSubmitting ? 'rgba(255, 255, 255, 0.2)' : '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              color: isSubmitting ? '#fff' : '#667eea',
-              fontSize: '15px',
-              fontWeight: '700',
-              cursor: isSubmitting ? 'not-allowed' : 'pointer'
-            }}
-            }}
+              style={{
+                width: '100%',
+                padding: '14px',
+                background: isSubmitting ? 'rgba(255, 255, 255, 0.2)' : '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                color: isSubmitting ? '#fff' : '#667eea',
+                fontSize: '15px',
+                fontWeight: '700',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer'
+              }}
             >
               {isSubmitting ? 'Processing...' : isLogin ? 'Login' : 'Sign Up'}
             </button>
@@ -286,17 +283,16 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
             <button
               type="button"
               onClick={(e) => { triggerGuest(e); onSkipAuth(); }}
-            style={{
-              marginTop: '12px',
-              padding: '8px 16px',
-              background: 'transparent',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '8px',
-              color: 'rgba(255, 255, 255, 0.7)',
-              fontSize: '12px',
-              cursor: 'pointer'
-            }}
-            }}
+              style={{
+                marginTop: '12px',
+                padding: '8px 16px',
+                background: 'transparent',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '8px',
+                color: 'rgba(255, 255, 255, 0.7)',
+                fontSize: '12px',
+                cursor: 'pointer'
+              }}
             >
               Continue as Guest
             </button>
