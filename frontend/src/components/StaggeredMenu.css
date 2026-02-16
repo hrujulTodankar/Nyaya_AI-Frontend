@@ -13,6 +13,7 @@
   padding: 2em;
   pointer-events: none;
   z-index: 20;
+  display: none;
 }
 
 .staggered-menu-header > * {
