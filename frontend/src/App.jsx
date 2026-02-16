@@ -21,6 +21,7 @@ import GlareHover from './components/GlareHover.jsx'
 import AnimatedText from './components/AnimatedText.jsx'
 import AuthPage from './components/AuthPage.jsx'
 import LawAgentView from './components/LawAgentView.jsx'
+import GooeyNav from './components/GooeyNav.jsx'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -692,51 +693,21 @@ function App() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '13px' }}>{user.name}</span>
-          <button
-            onClick={() => setActiveView('consult')}
-            style={{
-              padding: '8px 20px',
-              background: activeView === 'consult' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '9999px',
-              color: '#fff',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-          >
-            Chat Mode
-          </button>
-          <button
-            onClick={() => setActiveView('law-agent')}
-            style={{
-              padding: '8px 20px',
-              background: activeView === 'law-agent' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '9999px',
-              color: '#fff',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-          >
-            Law Agent Mode
-          </button>
-          <button
-            onClick={() => setActiveView('docs')}
-            style={{
-              padding: '8px 20px',
-              background: activeView === 'docs' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '9999px',
-              color: '#fff',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
-          >
-            EXPLORE
-          </button>
+          <GooeyNav
+            items={[
+              { label: 'Chat Mode', value: 'consult' },
+              { label: 'Law Agent Mode', value: 'law-agent' },
+              { label: 'EXPLORE', value: 'docs' }
+            ]}
+            particleCount={10}
+            particleDistances={[60, 5]}
+            particleR={80}
+            initialActiveIndex={activeView === 'consult' ? 0 : activeView === 'law-agent' ? 1 : activeView === 'docs' ? 2 : 0}
+            animationTime={400}
+            timeVariance={200}
+            colors={[1, 2, 3, 1]}
+            onItemClick={(item) => setActiveView(item.value)}
+          />
           <button
             onClick={handleLogout}
             style={{
