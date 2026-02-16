@@ -23,6 +23,8 @@ import AuthPage from './components/AuthPage.jsx'
 import LawAgentView from './components/LawAgentView.jsx'
 import StaggeredMenu from './components/StaggeredMenu.jsx'
 import { casePresentationService } from './services/nyayaApi.js'
+import { useGooeyAnimation } from './hooks/useGooeyAnimation.js'
+import './styles/gooeyAnimation.css'
 
 // Sample data for testing case presentation components
 const sampleCaseSummary = {
@@ -438,6 +440,7 @@ function App() {
   const [isAuthChecking, setIsAuthChecking] = useState(true)
   const [lastResponse, setLastResponse] = useState(null)
   const menuRef = useRef(null)
+  const { containerRef: menuBtnRef, triggerAnimation: triggerMenu } = useGooeyAnimation(10, 'rgba(255,255,255,0.5)')
 
   useEffect(() => {
     const storedUser = localStorage.getItem('nyaya_user')
@@ -692,25 +695,29 @@ function App() {
             Nyaya AI
           </span>
         </div>
-        <button
-          onClick={() => {
-            if (menuRef.current) {
-              menuRef.current.toggle();
-            }
-          }}
-          style={{
-            padding: '8px 20px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '9999px',
-            color: '#fff',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer'
-          }}
-        >
-          Menu
-        </button>
+        <div className="gooey-button-wrapper" style={{ position: 'relative' }}>
+          <div ref={menuBtnRef} className="gooey-particle-container" />
+          <button
+            onClick={(e) => {
+              triggerMenu(e);
+              if (menuRef.current) {
+                menuRef.current.toggle();
+              }
+            }}
+            style={{
+              padding: '8px 20px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '9999px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Menu
+          </button>
+        </div>
       </nav>
 
       <StaggeredMenu
