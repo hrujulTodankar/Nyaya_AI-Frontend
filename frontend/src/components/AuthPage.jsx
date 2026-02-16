@@ -55,12 +55,21 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
       alignItems: 'center',
       justifyContent: 'center',
       position: 'relative',
-      padding: '20px'
+      padding: '20px',
+      background: '#000',
+      overflow: 'hidden'
     }}>
       {/* Galaxy Background */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+      <div style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        width: '100%', 
+        height: '100%', 
+        zIndex: 0 
+      }}>
         <Galaxy 
-          mouseInteraction
+          mouseInteraction={true}
           density={1.5}
           glowIntensity={0.2}
           saturation={0}
