@@ -219,7 +219,9 @@ const LegalQueryCard = () => {
               {(response.enforcement_decision || response.reasoning_trace?.enforcement_decision) && (
                 <div style={{ marginTop: '20px' }}>
                   <h5 style={{ 
-                    color: '#ef4444', 
+                    color: response.enforcement_decision === 'ALLOW' ? '#10b981' : 
+                          response.enforcement_decision === 'BLOCK' ? '#ef4444' :
+                          response.enforcement_decision === 'ESCALATE' ? '#f59e0b' : '#ef4444',
                     fontSize: '16px', 
                     marginBottom: '12px',
                     fontWeight: '600'
@@ -227,20 +229,54 @@ const LegalQueryCard = () => {
                     ⚖️ Enforcement Decision
                   </h5>
                   <div style={{
-                    padding: '16px',
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    border: '1px solid rgba(239, 68, 68, 0.3)',
-                    borderRadius: '8px'
+                    padding: '20px',
+                    background: response.enforcement_decision === 'ALLOW' ? 'rgba(16, 185, 129, 0.1)' : 
+                               response.enforcement_decision === 'BLOCK' ? 'rgba(239, 68, 68, 0.1)' :
+                               response.enforcement_decision === 'ESCALATE' ? 'rgba(245, 158, 11, 0.1)' :
+                               'rgba(239, 68, 68, 0.1)',
+                    border: response.enforcement_decision === 'ALLOW' ? '2px solid rgba(16, 185, 129, 0.4)' : 
+                            response.enforcement_decision === 'BLOCK' ? '2px solid rgba(239, 68, 68, 0.4)' :
+                            response.enforcement_decision === 'ESCALATE' ? '2px solid rgba(245, 158, 11, 0.4)' :
+                            '2px solid rgba(239, 68, 68, 0.4)',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px'
                   }}>
-                    <div style={{ 
-                      color: 'rgba(255, 255, 255, 0.9)', 
-                      fontSize: '14px', 
-                      lineHeight: '1.6',
-                      fontWeight: '600',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                    <div style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      background: response.enforcement_decision === 'ALLOW' ? '#10b981' : 
+                                 response.enforcement_decision === 'BLOCK' ? '#ef4444' :
+                                 response.enforcement_decision === 'ESCALATE' ? '#f59e0b' : '#ef4444',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '20px',
+                      flexShrink: 0
                     }}>
-                      {response.enforcement_decision || response.reasoning_trace.enforcement_decision}
+                      {response.enforcement_decision === 'ALLOW' ? '✓' : 
+                       response.enforcement_decision === 'BLOCK' ? '⛔' :
+                       response.enforcement_decision === 'ESCALATE' ? '⚠️' : '⚖️'}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ 
+                        color: '#fff', 
+                        fontSize: '16px', 
+                        fontWeight: '700',
+                        marginBottom: '4px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px'
+                      }}>
+                        {response.enforcement_decision || response.reasoning_trace.enforcement_decision}
+                      </div>
+                      <div style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '12px' }}>
+                        {response.enforcement_decision === 'ALLOW' ? 'Query processed - no restrictions applied' :
+                         response.enforcement_decision === 'BLOCK' ? 'Query blocked - content policy violation' :
+                         response.enforcement_decision === 'ESCALATE' ? 'Requires human review - escalated to legal team' :
+                         'Enforcement decision applied'}
+                      </div>
                     </div>
                   </div>
                 </div>
