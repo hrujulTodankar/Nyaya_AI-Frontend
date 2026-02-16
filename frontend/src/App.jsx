@@ -656,8 +656,7 @@ function App() {
             style={{ 
               width: '40px', 
               height: '40px', 
-              objectFit: 'contain',
-              filter: 'brightness(0) invert(1)'
+              objectFit: 'contain'
             }} 
           />
           <span style={{
