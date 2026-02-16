@@ -260,6 +260,7 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
             </span>
           </p>
           <button
+            type="button"
             onClick={onSkipAuth}
             style={{
               marginTop: '12px',
