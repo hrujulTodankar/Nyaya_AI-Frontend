@@ -46,7 +46,6 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
   }
 
   const handleChange = (e) => {
-    e.preventDefault()
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
@@ -157,6 +156,7 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter your name"
+                autoComplete="off"
                 style={{
                   width: '100%',
                   padding: '12px',
@@ -181,6 +181,7 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
+              autoComplete="off"
               style={{
                 width: '100%',
                 padding: '12px',
@@ -204,6 +205,7 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
+              autoComplete="off"
               style={{
                 width: '100%',
                 padding: '12px',
