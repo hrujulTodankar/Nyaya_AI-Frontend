@@ -113,6 +113,6 @@ const StaggeredMenu = forwardRef(({ items = [], onItemClick, accentColor = '#667
       </aside>
     </div>
   );
-};
+});
 
 export default StaggeredMenu;
