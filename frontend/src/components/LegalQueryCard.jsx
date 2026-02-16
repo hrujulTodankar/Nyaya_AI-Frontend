@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import FeedbackButtons from './FeedbackButtons.jsx'
 import { legalQueryService } from '../services/nyayaApi.js'
-import { useGooeyAnimation } from '../hooks/useGooeyAnimation.js'
-import '../styles/gooeyAnimation.css'
 
 const LegalQueryCard = ({ onResponseReceived }) => {
   const [query, setQuery] = useState('')
@@ -10,8 +8,6 @@ const LegalQueryCard = ({ onResponseReceived }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [response, setResponse] = useState(null)
   const [traceId, setTraceId] = useState(null)
-  const { containerRef: jurisdictionRef, triggerAnimation: triggerJurisdiction } = useGooeyAnimation(10, '#3b82f6')
-  const { containerRef: submitRef, triggerAnimation: triggerSubmit } = useGooeyAnimation(10, '#3b82f6')
 
   const jurisdictionMap = {
     'India': 'India',
@@ -74,11 +70,10 @@ const LegalQueryCard = ({ onResponseReceived }) => {
           <label style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '14px', marginBottom: '8px', display: 'block' }}>Select Jurisdiction</label>
           <div style={{ display: 'flex', gap: '12px' }}>
             {['India', 'UK', 'UAE'].map(jurisdiction => (
-              <div key={jurisdiction} className="gooey-button-wrapper" style={{ position: 'relative' }}>
-                <div ref={jurisdictionRef} className="gooey-particle-container" />
-                <button
-                  type="button"
-                  onClick={(e) => { triggerJurisdiction(e); setSelectedJurisdiction(jurisdiction); }}
+              <button
+                key={jurisdiction}
+                type="button"
+                onClick={() => setSelectedJurisdiction(jurisdiction)}
                 style={{
                   padding: '10px 20px',
                   border: selectedJurisdiction === jurisdiction ? '2px solid #3b82f6' : '2px solid rgba(255, 255, 255, 0.2)',
@@ -89,10 +84,9 @@ const LegalQueryCard = ({ onResponseReceived }) => {
                   fontSize: '14px',
                   fontWeight: '600'
                 }}
-                >
-                  {jurisdiction}
-                </button>
-              </div>
+              >
+                {jurisdiction}
+              </button>
             ))}
           </div>
         </div>
@@ -115,12 +109,9 @@ const LegalQueryCard = ({ onResponseReceived }) => {
               marginBottom: '16px'
             }}
           />
-          <div className="gooey-button-wrapper" style={{ position: 'relative', display: 'inline-block' }}>
-            <div ref={submitRef} className="gooey-particle-container" />
-            <button
-              type="submit"
-              disabled={isSubmitting || !query.trim()}
-              onClick={(e) => { if (!isSubmitting && query.trim()) triggerSubmit(e); }}
+          <button
+            type="submit"
+            disabled={isSubmitting || !query.trim()}
             style={{
               padding: '12px 32px',
               background: isSubmitting || !query.trim() ? 'rgba(59, 130, 246, 0.5)' : '#3b82f6',
@@ -131,10 +122,9 @@ const LegalQueryCard = ({ onResponseReceived }) => {
               fontWeight: '600',
               cursor: isSubmitting || !query.trim() ? 'not-allowed' : 'pointer'
             }}
-            >
-              {isSubmitting ? 'Analyzing...' : 'Get Legal Analysis'}
-            </button>
-          </div>
+          >
+            {isSubmitting ? 'Analyzing...' : 'Get Legal Analysis'}
+          </button>
         </form>
       </div>
 

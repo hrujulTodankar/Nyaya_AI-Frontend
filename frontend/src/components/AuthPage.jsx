@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import Galaxy from './Galaxy.jsx'
-import { useGooeyAnimation } from '../hooks/useGooeyAnimation.js'
-import '../styles/gooeyAnimation.css'
 
 const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
   const [isLogin, setIsLogin] = useState(true)
@@ -12,10 +10,6 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
-  const { containerRef: loginRef, triggerAnimation: triggerLogin } = useGooeyAnimation(10, '#fff')
-  const { containerRef: signupRef, triggerAnimation: triggerSignup } = useGooeyAnimation(10, '#fff')
-  const { containerRef: submitRef, triggerAnimation: triggerSubmit } = useGooeyAnimation(10, '#667eea')
-  const { containerRef: guestRef, triggerAnimation: triggerGuest } = useGooeyAnimation(10, 'rgba(255,255,255,0.5)')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -114,46 +108,40 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
         </div>
 
         <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
-          <div className="gooey-button-wrapper" style={{ flex: 1, position: 'relative' }}>
-            <div ref={loginRef} className="gooey-particle-container" />
-            <button
-              type="button"
-              onClick={(e) => { triggerLogin(e); setIsLogin(true); }}
-              style={{
-                flex: 1,
-                padding: '12px',
-                background: isLogin ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                border: isLogin ? '2px solid rgba(255, 255, 255, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '8px',
-                color: '#fff',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer'
-              }}
-            >
-              Login
-            </button>
-          </div>
-          <div className="gooey-button-wrapper" style={{ flex: 1, position: 'relative' }}>
-            <div ref={signupRef} className="gooey-particle-container" />
-            <button
-              type="button"
-              onClick={(e) => { triggerSignup(e); setIsLogin(false); }}
-              style={{
-                flex: 1,
-                padding: '12px',
-                background: !isLogin ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
-                border: !isLogin ? '2px solid rgba(255, 255, 255, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '8px',
-                color: '#fff',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer'
-              }}
-            >
-              Sign Up
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setIsLogin(true)}
+            style={{
+              flex: 1,
+              padding: '12px',
+              background: isLogin ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+              border: isLogin ? '2px solid rgba(255, 255, 255, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '8px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Login
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsLogin(false)}
+            style={{
+              flex: 1,
+              padding: '12px',
+              background: !isLogin ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+              border: !isLogin ? '2px solid rgba(255, 255, 255, 0.4)' : '2px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '8px',
+              color: '#fff',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Sign Up
+          </button>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -245,27 +233,23 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
             </div>
           )}
 
-          <div className="gooey-button-wrapper" style={{ position: 'relative', width: '100%' }}>
-            <div ref={submitRef} className="gooey-particle-container" />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              onClick={(e) => { if (!isSubmitting) triggerSubmit(e); }}
-              style={{
-                width: '100%',
-                padding: '14px',
-                background: isSubmitting ? 'rgba(255, 255, 255, 0.2)' : '#fff',
-                border: 'none',
-                borderRadius: '8px',
-                color: isSubmitting ? '#fff' : '#667eea',
-                fontSize: '15px',
-                fontWeight: '700',
-                cursor: isSubmitting ? 'not-allowed' : 'pointer'
-              }}
-            >
-              {isSubmitting ? 'Processing...' : isLogin ? 'Login' : 'Sign Up'}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            style={{
+              width: '100%',
+              padding: '14px',
+              background: isSubmitting ? 'rgba(255, 255, 255, 0.2)' : '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              color: isSubmitting ? '#fff' : '#667eea',
+              fontSize: '15px',
+              fontWeight: '700',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {isSubmitting ? 'Processing...' : isLogin ? 'Login' : 'Sign Up'}
+          </button>
         </form>
 
         <div style={{ marginTop: '24px', textAlign: 'center' }}>
@@ -278,25 +262,22 @@ const AuthPage = ({ onAuthSuccess, onSkipAuth }) => {
               {isLogin ? 'Sign Up' : 'Login'}
             </span>
           </p>
-          <div className="gooey-button-wrapper" style={{ position: 'relative', display: 'inline-block' }}>
-            <div ref={guestRef} className="gooey-particle-container" />
-            <button
-              type="button"
-              onClick={(e) => { triggerGuest(e); onSkipAuth(); }}
-              style={{
-                marginTop: '12px',
-                padding: '8px 16px',
-                background: 'transparent',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: '8px',
-                color: 'rgba(255, 255, 255, 0.7)',
-                fontSize: '12px',
-                cursor: 'pointer'
-              }}
-            >
-              Continue as Guest
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={onSkipAuth}
+            style={{
+              marginTop: '12px',
+              padding: '8px 16px',
+              background: 'transparent',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '8px',
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontSize: '12px',
+              cursor: 'pointer'
+            }}
+          >
+            Continue as Guest
+          </button>
         </div>
       </div>
     </div>
