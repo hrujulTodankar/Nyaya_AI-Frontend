@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { legalQueryService } from '../services/nyayaApi.js'
+import { useGooeyAnimation } from '../hooks/useGooeyAnimation.js'
+import '../styles/gooeyAnimation.css'
 
 // Validate that traceId is a valid non-empty string
 const isValidTraceId = (traceId) => {
@@ -19,12 +21,19 @@ const isValidFeedbackType = (type) => {
 
 const FeedbackButtons = ({ traceId, context = '' }) => {
   const [feedback, setFeedback] = useState({
-    helpful: null, // true, false, or null
-    clear: null, // true, false, or null
-    matchesSituation: null // true, false, or null
+    helpful: null,
+    clear: null,
+    matchesSituation: null
   })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState(null)
+  const { containerRef: helpfulYesRef, triggerAnimation: triggerHelpfulYes } = useGooeyAnimation(8, '#28a745')
+  const { containerRef: helpfulNoRef, triggerAnimation: triggerHelpfulNo } = useGooeyAnimation(8, '#dc3545')
+  const { containerRef: clearYesRef, triggerAnimation: triggerClearYes } = useGooeyAnimation(8, '#28a745')
+  const { containerRef: clearNoRef, triggerAnimation: triggerClearNo } = useGooeyAnimation(8, '#dc3545')
+  const { containerRef: matchYesRef, triggerAnimation: triggerMatchYes } = useGooeyAnimation(8, '#28a745')
+  const { containerRef: matchNoRef, triggerAnimation: triggerMatchNo } = useGooeyAnimation(8, '#dc3545')
+  const { containerRef: submitRef, triggerAnimation: triggerSubmit } = useGooeyAnimation(10, '#3b82f6')
 
   const submitFeedback = async (type, value) => {
     // Validate traceId before sending signal
@@ -103,42 +112,48 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
           Was this response helpful?
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            onClick={() => handleFeedback('helpful', true)}
-            disabled={submitting}
-            style={{
-              padding: '8px 12px',
-              border: feedback.helpful === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '6px',
-              background: feedback.helpful === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
-              color: feedback.helpful === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
-              cursor: 'pointer',
-              fontSize: '13px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px'
-            }}
-          >
-            👍 Helpful
-          </button>
-          <button
-            onClick={() => handleFeedback('helpful', false)}
-            disabled={submitting}
-            style={{
-              padding: '8px 12px',
-              border: feedback.helpful === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '6px',
-              background: feedback.helpful === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
-              color: feedback.helpful === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
-              cursor: 'pointer',
-              fontSize: '13px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px'
-            }}
-          >
-            👎 Not Helpful
-          </button>
+          <div className="gooey-button-wrapper" style={{ position: 'relative' }}>
+            <div ref={helpfulYesRef} className="gooey-particle-container" />
+            <button
+              onClick={(e) => { triggerHelpfulYes(e); handleFeedback('helpful', true); }}
+              disabled={submitting}
+              style={{
+                padding: '8px 12px',
+                border: feedback.helpful === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '6px',
+                background: feedback.helpful === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
+                color: feedback.helpful === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
+                cursor: 'pointer',
+                fontSize: '13px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px'
+              }}
+            >
+              👍 Helpful
+            </button>
+          </div>
+          <div className="gooey-button-wrapper" style={{ position: 'relative' }}>
+            <div ref={helpfulNoRef} className="gooey-particle-container" />
+            <button
+              onClick={(e) => { triggerHelpfulNo(e); handleFeedback('helpful', false); }}
+              disabled={submitting}
+              style={{
+                padding: '8px 12px',
+                border: feedback.helpful === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '6px',
+                background: feedback.helpful === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
+                color: feedback.helpful === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
+                cursor: 'pointer',
+                fontSize: '13px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px'
+              }}
+            >
+              👎 Not Helpful
+            </button>
+          </div>
         </div>
       </div>
 
@@ -153,36 +168,42 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
           Was this clear?
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            onClick={() => handleFeedback('clear', true)}
-            disabled={submitting}
-            style={{
-              padding: '6px 12px',
-              border: feedback.clear === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '6px',
-              background: feedback.clear === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
-              color: feedback.clear === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
-              cursor: 'pointer',
-              fontSize: '13px'
-            }}
-          >
-            Yes
-          </button>
-          <button
-            onClick={() => handleFeedback('clear', false)}
-            disabled={submitting}
-            style={{
-              padding: '6px 12px',
-              border: feedback.clear === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '6px',
-              background: feedback.clear === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
-              color: feedback.clear === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
-              cursor: 'pointer',
-              fontSize: '13px'
-            }}
-          >
-            No
-          </button>
+          <div className="gooey-button-wrapper" style={{ position: 'relative' }}>
+            <div ref={clearYesRef} className="gooey-particle-container" />
+            <button
+              onClick={(e) => { triggerClearYes(e); handleFeedback('clear', true); }}
+              disabled={submitting}
+              style={{
+                padding: '6px 12px',
+                border: feedback.clear === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '6px',
+                background: feedback.clear === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
+                color: feedback.clear === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
+                cursor: 'pointer',
+                fontSize: '13px'
+              }}
+            >
+              Yes
+            </button>
+          </div>
+          <div className="gooey-button-wrapper" style={{ position: 'relative' }}>
+            <div ref={clearNoRef} className="gooey-particle-container" />
+            <button
+              onClick={(e) => { triggerClearNo(e); handleFeedback('clear', false); }}
+              disabled={submitting}
+              style={{
+                padding: '6px 12px',
+                border: feedback.clear === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '6px',
+                background: feedback.clear === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
+                color: feedback.clear === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
+                cursor: 'pointer',
+                fontSize: '13px'
+              }}
+            >
+              No
+            </button>
+          </div>
         </div>
       </div>
 
@@ -197,62 +218,72 @@ const FeedbackButtons = ({ traceId, context = '' }) => {
           Did this match your situation?
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            onClick={() => handleFeedback('matchesSituation', true)}
-            disabled={submitting}
-            style={{
-              padding: '6px 12px',
-              border: feedback.matchesSituation === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '6px',
-              background: feedback.matchesSituation === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
-              color: feedback.matchesSituation === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
-              cursor: 'pointer',
-              fontSize: '13px'
-            }}
-          >
-            Yes
-          </button>
-          <button
-            onClick={() => handleFeedback('matchesSituation', false)}
-            disabled={submitting}
-            style={{
-              padding: '6px 12px',
-              border: feedback.matchesSituation === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '6px',
-              background: feedback.matchesSituation === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
-              color: feedback.matchesSituation === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
-              cursor: 'pointer',
-              fontSize: '13px'
-            }}
-          >
-            No
-          </button>
+          <div className="gooey-button-wrapper" style={{ position: 'relative' }}>
+            <div ref={matchYesRef} className="gooey-particle-container" />
+            <button
+              onClick={(e) => { triggerMatchYes(e); handleFeedback('matchesSituation', true); }}
+              disabled={submitting}
+              style={{
+                padding: '6px 12px',
+                border: feedback.matchesSituation === true ? '2px solid #28a745' : '2px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '6px',
+                background: feedback.matchesSituation === true ? '#28a745' : 'rgba(255, 255, 255, 0.05)',
+                color: feedback.matchesSituation === true ? 'white' : 'rgba(255, 255, 255, 0.8)',
+                cursor: 'pointer',
+                fontSize: '13px'
+              }}
+            >
+              Yes
+            </button>
+          </div>
+          <div className="gooey-button-wrapper" style={{ position: 'relative' }}>
+            <div ref={matchNoRef} className="gooey-particle-container" />
+            <button
+              onClick={(e) => { triggerMatchNo(e); handleFeedback('matchesSituation', false); }}
+              disabled={submitting}
+              style={{
+                padding: '6px 12px',
+                border: feedback.matchesSituation === false ? '2px solid #dc3545' : '2px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '6px',
+                background: feedback.matchesSituation === false ? '#dc3545' : 'rgba(255, 255, 255, 0.05)',
+                color: feedback.matchesSituation === false ? 'white' : 'rgba(255, 255, 255, 0.8)',
+                cursor: 'pointer',
+                fontSize: '13px'
+              }}
+            >
+              No
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Submit Feedback Button */}
-      <button
-        onClick={() => {
-          if (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) {
-            alert('Feedback submitted successfully!')
-          }
-        }}
-        disabled={submitting || (feedback.helpful === null && feedback.clear === null && feedback.matchesSituation === null)}
-        style={{
-          width: '100%',
-          padding: '12px',
-          marginTop: '15px',
-          border: 'none',
-          borderRadius: '8px',
-          background: (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) ? '#3b82f6' : 'rgba(255, 255, 255, 0.1)',
-          color: '#fff',
-          cursor: (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) ? 'pointer' : 'not-allowed',
-          fontSize: '14px',
-          fontWeight: '600'
-        }}
-      >
-        {submitting ? 'Submitting...' : 'Submit Feedback'}
-      </button>
+      <div className="gooey-button-wrapper" style={{ position: 'relative', width: '100%' }}>
+        <div ref={submitRef} className="gooey-particle-container" />
+        <button
+          onClick={(e) => {
+            if (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) {
+              triggerSubmit(e);
+              alert('Feedback submitted successfully!');
+            }
+          }}
+          disabled={submitting || (feedback.helpful === null && feedback.clear === null && feedback.matchesSituation === null)}
+          style={{
+            width: '100%',
+            padding: '12px',
+            marginTop: '15px',
+            border: 'none',
+            borderRadius: '8px',
+            background: (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) ? '#3b82f6' : 'rgba(255, 255, 255, 0.1)',
+            color: '#fff',
+            cursor: (feedback.helpful !== null || feedback.clear !== null || feedback.matchesSituation !== null) ? 'pointer' : 'not-allowed',
+            fontSize: '14px',
+            fontWeight: '600'
+          }}
+        >
+          {submitting ? 'Submitting...' : 'Submit Feedback'}
+        </button>
+      </div>
 
       {/* Error display */}
       {error && (
