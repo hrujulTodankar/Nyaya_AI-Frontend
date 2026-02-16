@@ -22,6 +22,7 @@ import AnimatedText from './components/AnimatedText.jsx'
 import AuthPage from './components/AuthPage.jsx'
 import LawAgentView from './components/LawAgentView.jsx'
 import StaggeredMenu from './components/StaggeredMenu.jsx'
+import { gsap } from 'gsap'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -691,24 +692,57 @@ function App() {
             Nyaya AI
           </span>
         </div>
-        <StaggeredMenu
-          items={[
-            { label: 'Chat Mode', value: 'consult' },
-            { label: 'Law Agent', value: 'law-agent' },
-            { label: 'Explore', value: 'docs' },
-            { label: user.name, value: 'profile' },
-            { label: 'Logout', value: 'logout' }
-          ]}
-          accentColor="#667eea"
-          onItemClick={(item) => {
-            if (item.value === 'logout') {
-              handleLogout();
-            } else {
-              setActiveView(item.value);
+        <button
+          onClick={() => {
+            const panel = document.querySelector('.staggered-menu-panel');
+            const icon = document.querySelector('.sm-icon');
+            const textInner = document.querySelector('.sm-toggle-textInner');
+            const isOpen = panel && panel.style.transform !== 'translateX(100%)';
+            
+            if (panel && icon && textInner) {
+              if (!isOpen) {
+                gsap.to(panel, { xPercent: 0, duration: 0.5, ease: 'power4.out' });
+                gsap.to(icon, { rotate: 225, duration: 0.8, ease: 'power4.out' });
+                gsap.to(textInner, { yPercent: -50, duration: 0.5, ease: 'power4.out' });
+              } else {
+                gsap.to(panel, { xPercent: 100, duration: 0.32, ease: 'power3.in' });
+                gsap.to(icon, { rotate: 0, duration: 0.35, ease: 'power3.inOut' });
+                gsap.to(textInner, { yPercent: 0, duration: 0.35, ease: 'power3.inOut' });
+              }
             }
           }}
-        />
+          style={{
+            padding: '8px 20px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '9999px',
+            color: '#fff',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}
+        >
+          Menu
+        </button>
       </nav>
+
+      <StaggeredMenu
+        items={[
+          { label: 'Chat Mode', value: 'consult' },
+          { label: 'Law Agent', value: 'law-agent' },
+          { label: 'Explore', value: 'docs' },
+          { label: user.name, value: 'profile' },
+          { label: 'Logout', value: 'logout' }
+        ]}
+        accentColor="#667eea"
+        onItemClick={(item) => {
+          if (item.value === 'logout') {
+            handleLogout();
+          } else {
+            setActiveView(item.value);
+          }
+        }}
+      />
 
       {/* Main Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
