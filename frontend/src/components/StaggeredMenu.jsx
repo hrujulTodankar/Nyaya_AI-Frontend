@@ -11,6 +11,7 @@ const StaggeredMenu = forwardRef(({ items = [], onItemClick, accentColor = '#667
   const iconRef = useRef(null);
   const textInnerRef = useRef(null);
   const toggleBtnRef = useRef(null);
+  const particleContainerRef = useRef(null);
   const [textLines, setTextLines] = useState(['Menu', 'Close']);
 
   useLayoutEffect(() => {
@@ -37,9 +38,34 @@ const StaggeredMenu = forwardRef(({ items = [], onItemClick, accentColor = '#667
     return () => ctx.revert();
   }, []);
 
+  const createParticles = useCallback(() => {
+    const container = particleContainerRef.current;
+    if (!container) return;
+
+    for (let i = 0; i < 10; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'menu-particle';
+      const angle = (Math.random() * 360) * (Math.PI / 180);
+      const distance = 60 + Math.random() * 40;
+      const endX = Math.cos(angle) * distance;
+      const endY = Math.sin(angle) * distance;
+      const duration = 0.6 + Math.random() * 0.4;
+      
+      particle.style.cssText = `
+        --end-x: ${endX}px;
+        --end-y: ${endY}px;
+        --duration: ${duration}s;
+      `;
+      
+      container.appendChild(particle);
+      setTimeout(() => container.removeChild(particle), duration * 1000);
+    }
+  }, []);
+
   const toggleMenu = useCallback(() => {
     const target = !open;
     setOpen(target);
+    createParticles();
 
     const panel = panelRef.current;
     const icon = iconRef.current;
@@ -54,7 +80,7 @@ const StaggeredMenu = forwardRef(({ items = [], onItemClick, accentColor = '#667
       gsap.to(icon, { rotate: 0, duration: 0.35, ease: 'power3.inOut' });
       gsap.to(textInner, { yPercent: 0, duration: 0.35, ease: 'power3.inOut' });
     }
-  }, [open]);
+  }, [open, createParticles]);
 
   useImperativeHandle(ref, () => ({
     toggle: toggleMenu
@@ -75,6 +101,7 @@ const StaggeredMenu = forwardRef(({ items = [], onItemClick, accentColor = '#667
       </div>
 
       <header className="staggered-menu-header">
+        <div ref={particleContainerRef} className="menu-particle-container" />
         <button
           ref={toggleBtnRef}
           className="sm-toggle"
