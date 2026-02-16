@@ -15,23 +15,20 @@ const apiClient = axios.create({
   }
 })
 
-// Request interceptor for adding trace IDs
-apiClient.interceptors.request.use(
-  (config) => {
-    // Add trace ID for request tracking
-    config.headers['X-Trace-ID'] = generateTraceId()
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  }
-)
-
-// Response interceptor for error handling
+// Response interceptor for error handling with toast
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error('API Error:', error)
+    
+    // Show toast for server errors or network failures
+    if (!error.response || error.response.status >= 500 || error.code === 'ECONNABORTED') {
+      // Dynamic import to avoid circular dependency
+      import('react-hot-toast').then(({ toast }) => {
+        toast.error('Backend waking up... please wait.', { duration: 4000 })
+      })
+    }
+    
     return Promise.reject(error)
   }
 )
@@ -610,7 +607,7 @@ export const procedureService = {
       const response = await apiClient.get(`/nyaya/procedures/domain_classification/${jurisdiction}`)
       return { success: true, data: response.data }
     } catch (error) {
-      return { success: false, error: error.response?.data||message || error.message }
+      return { success: false, error: error.response?.data?.message || error.message }
     }
   },
 
