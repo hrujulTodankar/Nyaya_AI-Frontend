@@ -722,7 +722,7 @@ function App() {
           { label: user.name, value: 'profile' },
           { label: 'Logout', value: 'logout' }
         ]}
-        accentColor="#667eea"
+        accentColor="#8c929b"
         onItemClick={(item) => {
           if (item.value === 'logout') {
             handleLogout();
