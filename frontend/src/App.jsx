@@ -620,12 +620,6 @@ function App() {
             </div>
           </div>
         )
-      case 'timeline':
-        return (
-          <ErrorBoundary>
-            <CaseTimelineGenerator onBack={handleBackToDashboard} />
-          </ErrorBoundary>
-        )
       default:
         return <LegalOSDashboard onModuleSelect={handleModuleSelect} />
     }

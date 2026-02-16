@@ -15,20 +15,11 @@ const apiClient = axios.create({
   }
 })
 
-// Response interceptor for error handling with toast
+// Response interceptor for error handling
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error('API Error:', error)
-    
-    // Show toast for server errors or network failures
-    if (!error.response || error.response.status >= 500 || error.code === 'ECONNABORTED') {
-      // Dynamic import to avoid circular dependency
-      import('react-hot-toast').then(({ toast }) => {
-        toast.error('Backend waking up... please wait.', { duration: 4000 })
-      })
-    }
-    
     return Promise.reject(error)
   }
 )
