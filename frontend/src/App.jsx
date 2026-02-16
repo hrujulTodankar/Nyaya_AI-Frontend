@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Galaxy from './components/Galaxy.jsx'
 import LegalOSDashboard from './components/LegalOSDashboard.jsx'
 import LegalQueryCard from './components/LegalQueryCard.jsx'
@@ -22,7 +22,6 @@ import AnimatedText from './components/AnimatedText.jsx'
 import AuthPage from './components/AuthPage.jsx'
 import LawAgentView from './components/LawAgentView.jsx'
 import StaggeredMenu from './components/StaggeredMenu.jsx'
-import { gsap } from 'gsap'
 import { casePresentationService } from './services/nyayaApi.js'
 
 // Sample data for testing case presentation components
@@ -438,6 +437,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [isAuthChecking, setIsAuthChecking] = useState(true)
   const [lastResponse, setLastResponse] = useState(null)
+  const menuRef = useRef(null)
 
   useEffect(() => {
     const storedUser = localStorage.getItem('nyaya_user')
@@ -694,21 +694,9 @@ function App() {
         </div>
         <button
           onClick={() => {
-            const panel = document.querySelector('.staggered-menu-panel');
-            const icon = document.querySelector('.sm-icon');
-            const textInner = document.querySelector('.sm-toggle-textInner');
-            const isOpen = panel && panel.style.transform !== 'translateX(100%)';
-            
-            if (panel && icon && textInner) {
-              if (!isOpen) {
-                gsap.to(panel, { xPercent: 0, duration: 0.5, ease: 'power4.out' });
-                gsap.to(icon, { rotate: 225, duration: 0.8, ease: 'power4.out' });
-                gsap.to(textInner, { yPercent: -50, duration: 0.5, ease: 'power4.out' });
-              } else {
-                gsap.to(panel, { xPercent: 100, duration: 0.32, ease: 'power3.in' });
-                gsap.to(icon, { rotate: 0, duration: 0.35, ease: 'power3.inOut' });
-                gsap.to(textInner, { yPercent: 0, duration: 0.35, ease: 'power3.inOut' });
-              }
+            const toggleBtn = document.querySelector('.sm-toggle');
+            if (toggleBtn) {
+              toggleBtn.click();
             }
           }}
           style={{
