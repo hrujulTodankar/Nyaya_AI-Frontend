@@ -6,6 +6,7 @@
   height: 100vh;
   z-index: 40;
   pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 .staggered-menu-header {

@@ -94,7 +94,7 @@ const StaggeredMenu = forwardRef(({ items = [], onItemClick, accentColor = '#667
   };
 
   return (
-    <div className="staggered-menu-wrapper" style={{ '--sm-accent': accentColor, display: open ? 'block' : 'none' }}>
+    <div className="staggered-menu-wrapper" style={{ '--sm-accent': accentColor, opacity: open ? 1 : 0, pointerEvents: open ? 'auto' : 'none' }}>
       <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
         <div className="sm-prelayer" style={{ background: 'rgba(255, 255, 255, 0.1)' }} />
         <div className="sm-prelayer" style={{ background: 'rgba(255, 255, 255, 0.05)' }} />
