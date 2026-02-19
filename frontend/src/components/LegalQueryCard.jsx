@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import FeedbackButtons from './FeedbackButtons.jsx'
 import { legalQueryService } from '../services/nyayaApi.js'
 
@@ -8,6 +8,12 @@ const LegalQueryCard = ({ onResponseReceived }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [response, setResponse] = useState(null)
   const [traceId, setTraceId] = useState(null)
+  const [backendStatus, setBackendStatus] = useState('checking') // 'checking', 'ready', 'waking', 'processing'
+  const [isFirstRequest, setIsFirstRequest] = useState(true)
+
+  useEffect(() => {
+    setBackendStatus('ready')
+  }, [])
 
   const jurisdictionMap = {
     'India': 'India',
@@ -19,6 +25,11 @@ const LegalQueryCard = ({ onResponseReceived }) => {
     e.preventDefault()
     if (!query.trim()) return
 
+    if (isFirstRequest) {
+      setBackendStatus('processing')
+      setIsFirstRequest(false)
+    }
+    
     setIsSubmitting(true)
     setResponse(null)
     
@@ -27,8 +38,8 @@ const LegalQueryCard = ({ onResponseReceived }) => {
         query: query,
         jurisdiction_hint: jurisdictionMap[selectedJurisdiction]
       })
-
       if (result.success) {
+        setBackendStatus('ready')
         setTraceId(result.trace_id)
         
         const backendData = result.data
@@ -57,6 +68,23 @@ const LegalQueryCard = ({ onResponseReceived }) => {
 
   return (
     <>
+      {(backendStatus === 'checking' || backendStatus === 'processing') && (
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '16px',
+          padding: '60px 32px',
+          textAlign: 'center'
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '20px' }}>🌅</div>
+          <h2 style={{ color: '#fff', fontSize: '24px', marginBottom: '12px' }}>Backend is Waking up</h2>
+          <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '16px' }}>Wait for sometime...</p>
+        </div>
+      )}
+
+
+      {backendStatus === 'ready' && (
       <div style={{
         background: 'rgba(255, 255, 255, 0.05)',
         backdropFilter: 'blur(10px)',
@@ -492,6 +520,7 @@ const LegalQueryCard = ({ onResponseReceived }) => {
 
           <FeedbackButtons traceId={traceId} context="Legal Query Response" />
         </div>
+      )}
       )}
     </>
   )
